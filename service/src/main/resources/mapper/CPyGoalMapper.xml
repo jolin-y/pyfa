@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.pyfa.mapper.CPyGoalMapper">
+    
+    <resultMap type="CPyGoal" id="CPyGoalResult">
+        <result property="goalId"    column="goal_id"    />
+        <result property="pyfaId"    column="pyfa_id"    />
+        <result property="describe1"    column="describe1"    />
+        <result property="goal1"    column="goal1"    />
+        <result property="goal2"    column="goal2"    />
+        <result property="goal3"    column="goal3"    />
+        <result property="goal4"    column="goal4"    />
+        <result property="goal5"    column="goal5"    />
+    </resultMap>
+
+    <sql id="selectCPyGoalVo">
+        select goal_id, pyfa_id, describe1, goal1, goal2, goal3, goal4, goal5 from c_py_goal
+    </sql>
+
+    <select id="selectCPyGoalList" parameterType="CPyGoal" resultMap="CPyGoalResult">
+        <include refid="selectCPyGoalVo"/>
+        <where>  
+            <if test="pyfaId != null "> and pyfa_id = #{pyfaId}</if>
+            <if test="describe1 != null  and describe1 != ''"> and describe1 = #{describe1}</if>
+            <if test="goal1 != null  and goal1 != ''"> and goal1 = #{goal1}</if>
+            <if test="goal2 != null  and goal2 != ''"> and goal2 = #{goal2}</if>
+            <if test="goal3 != null  and goal3 != ''"> and goal3 = #{goal3}</if>
+            <if test="goal4 != null  and goal4 != ''"> and goal4 = #{goal4}</if>
+            <if test="goal5 != null  and goal5 != ''"> and goal5 = #{goal5}</if>
+        </where>
+    </select>
+    
+    <select id="selectCPyGoalByGoalId" parameterType="Long" resultMap="CPyGoalResult">
+        <include refid="selectCPyGoalVo"/>
+        where goal_id = #{goalId}
+    </select>
+
+    <select id="selectCPyGoalByPyfaId" parameterType="Long" resultMap="CPyGoalResult">
+        <include refid="selectCPyGoalVo"/>
+        where pyfa_id = #{pyfaId}
+    </select>
+        
+    <insert id="insertCPyGoal" parameterType="CPyGoal">
+        insert into c_py_goal
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="goalId != null">goal_id,</if>
+            <if test="pyfaId != null">pyfa_id,</if>
+            <if test="describe1 != null">describe1,</if>
+            <if test="goal1 != null">goal1,</if>
+            <if test="goal2 != null">goal2,</if>
+            <if test="goal3 != null">goal3,</if>
+            <if test="goal4 != null">goal4,</if>
+            <if test="goal5 != null">goal5,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="goalId != null">#{goalId},</if>
+            <if test="pyfaId != null">#{pyfaId},</if>
+            <if test="describe1 != null">#{describe1},</if>
+            <if test="goal1 != null">#{goal1},</if>
+            <if test="goal2 != null">#{goal2},</if>
+            <if test="goal3 != null">#{goal3},</if>
+            <if test="goal4 != null">#{goal4},</if>
+            <if test="goal5 != null">#{goal5},</if>
+         </trim>
+    </insert>
+
+    <update id="updateCPyGoal" parameterType="CPyGoal">
+        update c_py_goal
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="pyfaId != null">pyfa_id = #{pyfaId},</if>
+            <if test="describe1 != null">describe1 = #{describe1},</if>
+            <if test="goal1 != null">goal1 = #{goal1},</if>
+            <if test="goal2 != null">goal2 = #{goal2},</if>
+            <if test="goal3 != null">goal3 = #{goal3},</if>
+            <if test="goal4 != null">goal4 = #{goal4},</if>
+            <if test="goal5 != null">goal5 = #{goal5},</if>
+        </trim>
+        where goal_id = #{goalId}
+    </update>
+
+    <delete id="deleteCPyGoalByGoalId" parameterType="Long">
+        delete from c_py_goal where goal_id = #{goalId}
+    </delete>
+
+    <delete id="deleteCPyGoalByGoalIds" parameterType="String">
+        delete from c_py_goal where goal_id in 
+        <foreach item="goalId" collection="array" open="(" separator="," close=")">
+            #{goalId}
+        </foreach>
+    </delete>
+</mapper>

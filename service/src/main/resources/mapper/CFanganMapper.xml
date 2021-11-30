@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.pyfa.mapper.CFanganMapper">
+
+    <resultMap type="CFangan" id="CFanganResult">
+        <result property="id"    column="id"    />
+        <result property="year"    column="year"    />
+        <result property="goal"    column="goal"    />
+        <result property="charge"    column="charge"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectCFanganVo">
+        select id, year, goal, charge, create_by, create_time, update_by, update_time from c_fangan
+    </sql>
+
+    <select id="selectCFanganList" parameterType="CFangan" resultMap="CFanganResult">
+        <include refid="selectCFanganVo"/>
+        <where>
+            <if test="year != null  and year != ''"> and year = #{year}</if>
+            <if test="goal != null  and goal != ''"> and goal = #{goal}</if>
+            <if test="charge != null  and charge != ''"> and charge = #{charge}</if>
+        </where>
+    </select>
+
+    <select id="selectCFanganById" parameterType="String" resultMap="CFanganResult">
+        <include refid="selectCFanganVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertCFangan" parameterType="CFangan">
+        insert into c_fangan
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="year != null">year,</if>
+            <if test="goal != null">goal,</if>
+            <if test="charge != null">charge,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="year != null">#{year},</if>
+            <if test="goal != null">#{goal},</if>
+            <if test="charge != null">#{charge},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+        </trim>
+    </insert>
+
+    <update id="updateCFangan" parameterType="CFangan">
+        update c_fangan
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="year != null">year = #{year},</if>
+            <if test="goal != null">goal = #{goal},</if>
+            <if test="charge != null">charge = #{charge},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteCFanganById" parameterType="String">
+        delete from c_fangan where id = #{id}
+    </delete>
+
+    <delete id="deleteCFanganByIds" parameterType="String">
+        delete from c_fangan where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

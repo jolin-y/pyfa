@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.pyfa.mapper.CPyByyqMapper">
+    
+    <resultMap type="CPyByyq" id="CPyByyqResult">
+        <result property="byyqId"    column="byyq_id"    />
+        <result property="parentId"    column="parent_id"    />
+        <result property="ancestors"    column="ancestors"    />
+        <result property="byyqName"    column="byyq_name"    />
+        <result property="byyqContent"    column="byyq_content"    />
+        <result property="orderNum"    column="order_num"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectCPyByyqVo">
+        select byyq_id, parent_id, ancestors, byyq_name, byyq_content, order_num, del_flag, create_by, create_time, update_by, update_time from c_py_byyq
+    </sql>
+
+    <select id="selectCPyByyqList" parameterType="CPyByyq" resultMap="CPyByyqResult">
+        <include refid="selectCPyByyqVo"/>
+        <where>  
+            <if test="parentId != null "> and parent_id = #{parentId}</if>
+            <if test="ancestors != null  and ancestors != ''"> and ancestors = #{ancestors}</if>
+            <if test="byyqName != null  and byyqName != ''"> and byyq_name like concat('%', #{byyqName}, '%')</if>
+            <if test="byyqContent != null  and byyqContent != ''"> and byyq_content = #{byyqContent}</if>
+            <if test="orderNum != null "> and order_num = #{orderNum}</if>
+        </where>
+    </select>
+    
+    <select id="selectCPyByyqByByyqId" parameterType="Long" resultMap="CPyByyqResult">
+        <include refid="selectCPyByyqVo"/>
+        where byyq_id = #{byyqId}
+    </select>
+        
+    <insert id="insertCPyByyq" parameterType="CPyByyq" useGeneratedKeys="true" keyProperty="byyqId">
+        insert into c_py_byyq
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="parentId != null">parent_id,</if>
+            <if test="ancestors != null">ancestors,</if>
+            <if test="byyqName != null">byyq_name,</if>
+            <if test="byyqContent != null">byyq_content,</if>
+            <if test="orderNum != null">order_num,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="parentId != null">#{parentId},</if>
+            <if test="ancestors != null">#{ancestors},</if>
+            <if test="byyqName != null">#{byyqName},</if>
+            <if test="byyqContent != null">#{byyqContent},</if>
+            <if test="orderNum != null">#{orderNum},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateCPyByyq" parameterType="CPyByyq">
+        update c_py_byyq
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="parentId != null">parent_id = #{parentId},</if>
+            <if test="ancestors != null">ancestors = #{ancestors},</if>
+            <if test="byyqName != null">byyq_name = #{byyqName},</if>
+            <if test="byyqContent != null">byyq_content = #{byyqContent},</if>
+            <if test="orderNum != null">order_num = #{orderNum},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where byyq_id = #{byyqId}
+    </update>
+
+    <delete id="deleteCPyByyqByByyqId" parameterType="Long">
+        delete from c_py_byyq where byyq_id = #{byyqId}
+    </delete>
+
+    <delete id="deleteCPyByyqByByyqIds" parameterType="String">
+        delete from c_py_byyq where byyq_id in 
+        <foreach item="byyqId" collection="array" open="(" separator="," close=")">
+            #{byyqId}
+        </foreach>
+    </delete>
+
+
+
+    <select id="selectChildrenByyqById" parameterType="Long" resultMap="CPyByyqResult">
+		select * from c_py_byyq where find_in_set(#{byyqId}, ancestors)
+	</select>
+
+    <update id="updateByyqChildren" parameterType="java.util.List">
+        update c_py_byyq set ancestors =
+        <foreach collection="byyqs" item="item" index="index"
+                 separator=" " open="case byyq_id" close="end">
+            when #{item.byyqId} then #{item.ancestors}
+        </foreach>
+        where byyq_id in
+        <foreach collection="byyqs" item="item" index="index"
+                 separator="," open="(" close=")">
+            #{item.byyqId}
+        </foreach>
+    </update>
+
+</mapper>
