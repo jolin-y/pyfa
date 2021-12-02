@@ -1,6 +1,7 @@
 package com.ruoyi.pyfa.service.impl;
 
 
+import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.pyfa.domain.CPyGoal;
 import com.ruoyi.pyfa.mapper.CPyGoalMapper;
 import com.ruoyi.pyfa.service.ICPyGoalService;
@@ -81,6 +82,7 @@ public class CPyGoalServiceImpl implements ICPyGoalService
     @Override
     public int updateCPyGoal(CPyGoal cPyGoal)
     {
+        cPyGoal.setUpdateTime(DateUtils.getNowDate());
         return cPyGoalMapper.updateCPyGoal(cPyGoal);
     }
 

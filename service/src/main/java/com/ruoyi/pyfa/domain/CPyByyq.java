@@ -18,6 +18,10 @@ public class CPyByyq extends TreeEntity
     /** 毕业要求id */
     private Long byyqId;
 
+    /** 培养方案id */
+    @Excel(name = "培养方案id")
+    private String pyfaId;
+
     /** 毕业要求名称 */
     @Excel(name = "毕业要求名称")
     private String byyqName;
@@ -31,6 +35,27 @@ public class CPyByyq extends TreeEntity
 //
 //    /** 祖级列表 */
 //    private String ancestors;
+
+
+//    public void setPyfaId(Long pyfaId)
+//    {
+//        this.pyfaId = pyfaId;
+//    }
+//    public Long getPyfaId()
+//    {
+//        return pyfaId;
+//    }
+
+    public String getPyfaId()
+    {
+        return pyfaId;
+    }
+
+    public void setPyfaId(String pyfaId)
+    {
+        this.pyfaId = pyfaId;
+    }
+
 
     /** 删除标志（0代表存在 2代表删除） */
     private String delFlag;
@@ -82,6 +107,7 @@ public class CPyByyq extends TreeEntity
             .append("byyqContent", getByyqContent())
             .append("orderNum", getOrderNum())
             .append("delFlag", getDelFlag())
+            .append("pyfaId", getPyfaId())
             .append("createBy", getCreateBy())
             .append("createTime", getCreateTime())
             .append("updateBy", getUpdateBy())

@@ -138,91 +138,91 @@
 
 
 
-    <el-row :gutter="10" class="mb8">
-      <el-col :span="1.5">
-        <el-button
-          type="primary"
-          plain
-          icon="el-icon-plus"
-          size="mini"
-          @click="handleAdd"
-          v-hasPermi="['system:goal:add']"
-        >新增</el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="success"
-          plain
-          icon="el-icon-edit"
-          size="mini"
-          :disabled="single"
-          @click="handleUpdate"
-          v-hasPermi="['system:goal:edit']"
-        >修改</el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="danger"
-          plain
-          icon="el-icon-delete"
-          size="mini"
-          :disabled="multiple"
-          @click="handleDelete"
-          v-hasPermi="['system:goal:remove']"
-        >删除</el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="warning"
-          plain
-          icon="el-icon-download"
-          size="mini"
-          :loading="exportLoading"
-          @click="handleExport"
-          v-hasPermi="['system:goal:export']"
-        >导出</el-button>
-      </el-col>
-      <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
-    </el-row>
+<!--    <el-row :gutter="10" class="mb8">-->
+<!--      <el-col :span="1.5">-->
+<!--        <el-button-->
+<!--          type="primary"-->
+<!--          plain-->
+<!--          icon="el-icon-plus"-->
+<!--          size="mini"-->
+<!--          @click="handleAdd"-->
+<!--          v-hasPermi="['system:goal:add']"-->
+<!--        >新增</el-button>-->
+<!--      </el-col>-->
+<!--      <el-col :span="1.5">-->
+<!--        <el-button-->
+<!--          type="success"-->
+<!--          plain-->
+<!--          icon="el-icon-edit"-->
+<!--          size="mini"-->
+<!--          :disabled="single"-->
+<!--          @click="handleUpdate"-->
+<!--          v-hasPermi="['system:goal:edit']"-->
+<!--        >修改</el-button>-->
+<!--      </el-col>-->
+<!--      <el-col :span="1.5">-->
+<!--        <el-button-->
+<!--          type="danger"-->
+<!--          plain-->
+<!--          icon="el-icon-delete"-->
+<!--          size="mini"-->
+<!--          :disabled="multiple"-->
+<!--          @click="handleDelete"-->
+<!--          v-hasPermi="['system:goal:remove']"-->
+<!--        >删除</el-button>-->
+<!--      </el-col>-->
+<!--      <el-col :span="1.5">-->
+<!--        <el-button-->
+<!--          type="warning"-->
+<!--          plain-->
+<!--          icon="el-icon-download"-->
+<!--          size="mini"-->
+<!--          :loading="exportLoading"-->
+<!--          @click="handleExport"-->
+<!--          v-hasPermi="['system:goal:export']"-->
+<!--        >导出</el-button>-->
+<!--      </el-col>-->
+<!--      <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>-->
+<!--    </el-row>-->
 
+<!--页面下方的数据列表-->
+<!--    <el-table v-loading="loading" :data="goalList" @selection-change="handleSelectionChange">-->
+<!--      <el-table-column type="selection" width="55" align="center" />-->
+<!--      <el-table-column label="培养目标id" align="center" prop="goalId" />-->
+<!--      <el-table-column label="培养方案id" align="center" prop="pyfaId" />-->
+<!--      <el-table-column label="描述信息" align="center" prop="describe" />-->
+<!--      <el-table-column label="指标点1" align="center" prop="goal1" />-->
+<!--      <el-table-column label="指标点2" align="center" prop="goal2" />-->
+<!--      <el-table-column label="指标点3" align="center" prop="goal3" />-->
+<!--      <el-table-column label="指标点4" align="center" prop="goal4" />-->
+<!--      <el-table-column label="指标点5" align="center" prop="goal5" />-->
+<!--      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">-->
+<!--        <template slot-scope="scope">-->
+<!--          <el-button-->
+<!--            size="mini"-->
+<!--            type="text"-->
+<!--            icon="el-icon-edit"-->
+<!--            @click="handleUpdate(scope.row)"-->
+<!--            v-hasPermi="['system:goal:edit']"-->
+<!--          >修改</el-button>-->
+<!--          <el-button-->
+<!--            size="mini"-->
+<!--            type="text"-->
+<!--            icon="el-icon-delete"-->
+<!--            @click="handleDelete(scope.row)"-->
+<!--            v-hasPermi="['system:goal:remove']"-->
+<!--          >删除</el-button>-->
+<!--        </template>-->
+<!--      </el-table-column>-->
+<!--    </el-table>-->
 
-    <el-table v-loading="loading" :data="goalList" @selection-change="handleSelectionChange">
-      <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="培养目标id" align="center" prop="goalId" />
-      <el-table-column label="培养方案id" align="center" prop="pyfaId" />
-      <el-table-column label="描述信息" align="center" prop="describe" />
-      <el-table-column label="指标点1" align="center" prop="goal1" />
-      <el-table-column label="指标点2" align="center" prop="goal2" />
-      <el-table-column label="指标点3" align="center" prop="goal3" />
-      <el-table-column label="指标点4" align="center" prop="goal4" />
-      <el-table-column label="指标点5" align="center" prop="goal5" />
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
-        <template slot-scope="scope">
-          <el-button
-            size="mini"
-            type="text"
-            icon="el-icon-edit"
-            @click="handleUpdate(scope.row)"
-            v-hasPermi="['system:goal:edit']"
-          >修改</el-button>
-          <el-button
-            size="mini"
-            type="text"
-            icon="el-icon-delete"
-            @click="handleDelete(scope.row)"
-            v-hasPermi="['system:goal:remove']"
-          >删除</el-button>
-        </template>
-      </el-table-column>
-    </el-table>
-
-    <pagination
-      v-show="total>0"
-      :total="total"
-      :page.sync="queryParams.pageNum"
-      :limit.sync="queryParams.pageSize"
-      @pagination="getList"
-    />
+<!--    <pagination-->
+<!--      v-show="total>0"-->
+<!--      :total="total"-->
+<!--      :page.sync="queryParams.pageNum"-->
+<!--      :limit.sync="queryParams.pageSize"-->
+<!--      @pagination="getList"-->
+<!--    />-->
 
     <!-- 添加或修改培养目标表对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
@@ -321,18 +321,27 @@ export default {
       },
       // 表单校验
       rules: {
-      }
+      },
+
+      options:[],
+
     };
   },
   created() {
     this.getList();
+    // this.form.pyfaId =
+    // this.options = this.dict.type.xpu_pyfa_version;
+    // console.log(this.options);
+    //
+    // let resdata=Object.assign({},this.options)
+    // console.log(resdata)
   },
   methods: {
     /** 表单下拉展示搜索结果 */
     getValue:function(){
       getGoal_pyfa(this.form.pyfaId).then(response => {
         if(response.data != null) {
-          response.data.pyfaId = this.form.pyfaId;
+          // response.data.pyfaId = this.form.pyfaId;
           this.form = response.data;
 
           // // this.form = response.data;
@@ -350,6 +359,7 @@ export default {
           this.form.pyfaId = tmp;
 
         }
+
         // else {
         //   this.form.goalId= null;
         //   this.form.describe= null;
@@ -374,7 +384,7 @@ export default {
         this.total = response.total;
         this.loading = false;
 
-        console.log(this.queryParams)
+        // console.log(this.queryParams)
       });
     },
     // 取消按钮

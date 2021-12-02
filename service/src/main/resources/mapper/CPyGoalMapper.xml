@@ -13,10 +13,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="goal3"    column="goal3"    />
         <result property="goal4"    column="goal4"    />
         <result property="goal5"    column="goal5"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
     </resultMap>
 
     <sql id="selectCPyGoalVo">
-        select goal_id, pyfa_id, describe1, goal1, goal2, goal3, goal4, goal5 from c_py_goal
+        select goal_id, pyfa_id, describe1, goal1, goal2, goal3, goal4, goal5, create_by, create_time, update_by, update_time from c_py_goal
     </sql>
 
     <select id="selectCPyGoalList" parameterType="CPyGoal" resultMap="CPyGoalResult">
@@ -53,6 +57,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="goal3 != null">goal3,</if>
             <if test="goal4 != null">goal4,</if>
             <if test="goal5 != null">goal5,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="goalId != null">#{goalId},</if>
@@ -63,6 +71,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="goal3 != null">#{goal3},</if>
             <if test="goal4 != null">#{goal4},</if>
             <if test="goal5 != null">#{goal5},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
          </trim>
     </insert>
 
@@ -76,6 +88,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="goal3 != null">goal3 = #{goal3},</if>
             <if test="goal4 != null">goal4 = #{goal4},</if>
             <if test="goal5 != null">goal5 = #{goal5},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
         </trim>
         where goal_id = #{goalId}
     </update>

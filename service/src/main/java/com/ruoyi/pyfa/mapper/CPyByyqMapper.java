@@ -98,5 +98,13 @@ public interface CPyByyqMapper
      * @return 结果
      */
     public CPyByyq checkByyqNameUnique(@Param("byyqName") String byyqName, @Param("parentId") Long parentId);
+
+//    /**
+//     * 培养方案id 查询培养目标表
+//     *
+//     * @param pyfaId 培养目标表培养方案id
+//     * @return 培养目标表
+//     */
+//    public CPyByyq selectCPyByyqByPyfaId(Long pyfaId);
     
 }

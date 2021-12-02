@@ -12,6 +12,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="byyqContent"    column="byyq_content"    />
         <result property="orderNum"    column="order_num"    />
         <result property="delFlag"    column="del_flag"    />
+        <result property="pyfaId"    column="pyfa_id"    />
         <result property="createBy"    column="create_by"    />
         <result property="createTime"    column="create_time"    />
         <result property="updateBy"    column="update_by"    />
@@ -19,7 +20,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectCPyByyqVo">
-        select byyq_id, parent_id, ancestors, byyq_name, byyq_content, order_num, del_flag, create_by, create_time, update_by, update_time from c_py_byyq
+        select byyq_id, parent_id, ancestors, byyq_name, byyq_content, order_num, del_flag, pyfa_id, create_by, create_time, update_by, update_time from c_py_byyq
     </sql>
 
     <select id="selectCPyByyqList" parameterType="CPyByyq" resultMap="CPyByyqResult">
@@ -30,8 +31,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="byyqName != null  and byyqName != ''"> and byyq_name like concat('%', #{byyqName}, '%')</if>
             <if test="byyqContent != null  and byyqContent != ''"> and byyq_content = #{byyqContent}</if>
             <if test="orderNum != null "> and order_num = #{orderNum}</if>
+            <if test="pyfaId != null "> and pyfa_id = #{pyfaId}</if>
         </where>
     </select>
+
+<!--    <select id="selectCPyByyqByPyfaId" parameterType="Long" resultMap="CPyByyqResult">-->
+<!--        <include refid="selectCPyByyqVo"/>-->
+<!--        where pyfa_id = #{pyfaId}-->
+<!--    </select>-->
     
     <select id="selectCPyByyqByByyqId" parameterType="Long" resultMap="CPyByyqResult">
         <include refid="selectCPyByyqVo"/>
@@ -47,6 +54,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="byyqContent != null">byyq_content,</if>
             <if test="orderNum != null">order_num,</if>
             <if test="delFlag != null">del_flag,</if>
+            <if test="pyfaId != null">pyfa_id,</if>
             <if test="createBy != null">create_by,</if>
             <if test="createTime != null">create_time,</if>
             <if test="updateBy != null">update_by,</if>
@@ -59,6 +67,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="byyqContent != null">#{byyqContent},</if>
             <if test="orderNum != null">#{orderNum},</if>
             <if test="delFlag != null">#{delFlag},</if>
+            <if test="pyfaId != null">#{pyfaId},</if>
             <if test="createBy != null">#{createBy},</if>
             <if test="createTime != null">#{createTime},</if>
             <if test="updateBy != null">#{updateBy},</if>
@@ -75,6 +84,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="byyqContent != null">byyq_content = #{byyqContent},</if>
             <if test="orderNum != null">order_num = #{orderNum},</if>
             <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="pyfaId != null">pyfa_id = #{pyfaId},</if>
             <if test="createBy != null">create_by = #{createBy},</if>
             <if test="createTime != null">create_time = #{createTime},</if>
             <if test="updateBy != null">update_by = #{updateBy},</if>

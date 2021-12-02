@@ -61,6 +61,14 @@ public interface ICPyByyqService
      */
     public int deleteCPyByyqByByyqId(Long byyqId);
 
+//    /**
+//     * 培养方案id 查询培养目标表
+//     *
+//     * @param pyfaId 培养目标表培养方案id
+//     * @return 培养目标表
+//     */
+//    public CPyByyq selectCPyByyqByPyfaId(Long pyfaId);
+
 
 //    /**
 //     * 构建前端所需要树结构

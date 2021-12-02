@@ -1,6 +1,19 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="100px">
+<!--      <el-form-item label="方案版本" prop="pyfaId">-->
+<!--&lt;!&ndash;      <el-form-item label="方案版本">&ndash;&gt;-->
+<!--        <el-select v-model="queryParams.pyfaId" placeholder="培养方案版本" size="small">-->
+<!--          <el-option-->
+<!--            v-for="dict in dict.type.xpu_pyfa_version"-->
+<!--            :key="dict.value"-->
+<!--            :label="dict.label"-->
+<!--            :value="dict.value"-->
+<!--          ></el-option>-->
+<!--        </el-select>-->
+<!--      </el-form-item>-->
+
+
       <el-form-item label="毕业要求名称" prop="byyqName">
         <el-input
           v-model="queryParams.byyqName"
@@ -72,6 +85,7 @@
             v-hasPermi="['pyfa:byyq:add']"
           >新增</el-button>
           <el-button
+            v-if="scope.row.parentId != 0"
             size="mini"
             type="text"
             icon="el-icon-delete"
@@ -114,7 +128,7 @@
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
         <el-row>
           <el-col :span="24" v-if="form.parentId !== 0">
-            <el-form-item label="上级部门" prop="parentId">
+            <el-form-item label="上级要求" prop="parentId">
               <treeselect v-model="form.parentId" :options="byyqOptions" :normalizer="normalizer" placeholder="请选择上级毕业要求" />
             </el-form-item>
           </el-col>
@@ -130,6 +144,19 @@
               <el-input-number v-model="form.orderNum" controls-position="right" :min="0" />
             </el-form-item>
           </el-col>
+
+<!--          <el-col :span="12" v-if="form.parentId === 0">-->
+<!--            <el-form-item label="方案版本">-->
+<!--              <el-select v-model="form.pyfaId" placeholder="请选择">-->
+<!--                <el-option-->
+<!--                  v-for="dict in dict.type.xpu_pyfa_version"-->
+<!--                  :key="dict.value"-->
+<!--                  :label="dict.label"-->
+<!--                  :value="dict.value"-->
+<!--                ></el-option>-->
+<!--              </el-select>-->
+<!--            </el-form-item>-->
+<!--          </el-col>-->
 
           <el-col :span="24" v-if="form.parentId !== 0">
 <!--            <el-form-item label="负责人" prop="leader">-->
@@ -160,6 +187,7 @@ import "@riophae/vue-treeselect/dist/vue-treeselect.css";
 
 export default {
   name: "Byyq",
+  dicts: ['xpu_pyfa_version'],
   components: { Treeselect  },
   data() {
     return {
@@ -184,16 +212,17 @@ export default {
       // 查询参数
       queryParams: {
         byyqName: undefined,
+        pyfaId: undefined,
       },
       // 表单参数
       form: {},
       // 表单校验
       rules: {
         parentId: [
-          { required: true, message: "上级部门不能为空", trigger: "blur" }
+          { required: true, message: "上级要求不能为空", trigger: "blur" }
         ],
-        deptName: [
-          { required: true, message: "部门名称不能为空", trigger: "blur" }
+        byyqName: [
+          { required: true, message: "要求名称不能为空", trigger: "blur" }
         ],
         orderNum: [
           { required: true, message: "显示排序不能为空", trigger: "blur" }
@@ -210,6 +239,7 @@ export default {
       this.loading = true;
       listByyq(this.queryParams).then(response => {
         this.byyqList = this.handleTree(response.data, "byyqId", "parentId");
+        // console.log(response.data);
         this.loading = false;
       });
     },
@@ -229,8 +259,11 @@ export default {
       listByyq().then(response => {
         this.byyqOptions = [];
         const data = { byyqId: 0, byyqName: '顶级节点', children: [] };
+
         data.children = this.handleTree(response.data, "byyqId", "parentId");
+
         this.byyqOptions.push(data);
+
       });
     },
     // 取消按钮
@@ -252,6 +285,8 @@ export default {
         // createTime: null,
         // updateBy: null,
         // updateTime: null
+
+        pyfaId: undefined,
       };
       this.resetForm("form");
     },
@@ -270,13 +305,18 @@ export default {
       this.getTreeselect();
       if (row != undefined) {
         this.form.parentId = row.byyqId;
+        this.form.pyfaId = row.pyfaId;
       } else {
         this.form.parentId = 0;
       }
       this.open = true;
       this.title = "添加毕业要求";
       listByyq().then(response => {
+        // console.log(response.data);
+
         this.byyqOptions = this.handleTree(response.data, "byyqId");
+
+        // console.log(this.byyqOptions);
       });
     },
     /** 展开/折叠操作 */
@@ -293,6 +333,7 @@ export default {
       this.getTreeselect();
       if (row != null) {
         this.form.parentId = row.byyqId;
+        this.form.pyfaId = row.pyfaId;
       }
       getByyq(row.byyqId).then(response => {
         this.form = response.data;

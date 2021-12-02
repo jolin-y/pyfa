@@ -20,7 +20,7 @@ public class CPyGoal extends BaseEntity
 
     /** 培养方案id */
     @Excel(name = "培养方案id")
-    private Long pyfaId;
+    private String pyfaId;
 
     /** 描述信息 */
     @Excel(name = "描述信息")
@@ -55,12 +55,12 @@ public class CPyGoal extends BaseEntity
     {
         return goalId;
     }
-    public void setPyfaId(Long pyfaId) 
+    public void setPyfaId(String pyfaId)
     {
         this.pyfaId = pyfaId;
     }
 
-    public Long getPyfaId() 
+    public String getPyfaId()
     {
         return pyfaId;
     }
@@ -130,6 +130,10 @@ public class CPyGoal extends BaseEntity
             .append("goal3", getGoal3())
             .append("goal4", getGoal4())
             .append("goal5", getGoal5())
+            .append("createBy", getCreateBy())
+            .append("createTime", getCreateTime())
+            .append("updateBy", getUpdateBy())
+            .append("updateTime", getUpdateTime())
             .toString();
     }
 }
