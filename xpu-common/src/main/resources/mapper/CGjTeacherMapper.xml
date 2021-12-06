@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.drdc.mapper.CGjTeacherMapper">
+    
+    <resultMap type="CGjTeacher" id="CGjTeacherResult">
+        <result property="teacherId"    column="teacher_id"    />
+        <result property="teacherName"    column="teacher_name"    />
+        <result property="degreeId"    column="degree_id"    />
+    </resultMap>
+
+    <sql id="selectCGjTeacherVo">
+        select teacher_id, teacher_name, degree_id from c_gj_teacher
+    </sql>
+
+    <select id="selectCGjTeacherList" parameterType="CGjTeacher" resultMap="CGjTeacherResult">
+        <include refid="selectCGjTeacherVo"/>
+        <where>  
+            <if test="teacherName != null  and teacherName != ''"> and teacher_name like concat('%', #{teacherName}, '%')</if>
+            <if test="degreeId != null "> and degree_id = #{degreeId}</if>
+        </where>
+    </select>
+    
+    <select id="selectCGjTeacherByTeacherId" parameterType="Long" resultMap="CGjTeacherResult">
+        <include refid="selectCGjTeacherVo"/>
+        where teacher_id = #{teacherId}
+    </select>
+        
+    <insert id="insertCGjTeacher" parameterType="CGjTeacher" useGeneratedKeys="true" keyProperty="teacherId">
+        insert into c_gj_teacher
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="teacherName != null and teacherName != ''">teacher_name,</if>
+            <if test="degreeId != null">degree_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="teacherName != null and teacherName != ''">#{teacherName},</if>
+            <if test="degreeId != null">#{degreeId},</if>
+         </trim>
+    </insert>
+
+    <update id="updateCGjTeacher" parameterType="CGjTeacher">
+        update c_gj_teacher
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="teacherName != null and teacherName != ''">teacher_name = #{teacherName},</if>
+            <if test="degreeId != null">degree_id = #{degreeId},</if>
+        </trim>
+        where teacher_id = #{teacherId}
+    </update>
+
+    <delete id="deleteCGjTeacherByTeacherId" parameterType="Long">
+        delete from c_gj_teacher where teacher_id = #{teacherId}
+    </delete>
+
+    <delete id="deleteCGjTeacherByTeacherIds" parameterType="String">
+        delete from c_gj_teacher where teacher_id in 
+        <foreach item="teacherId" collection="array" open="(" separator="," close=")">
+            #{teacherId}
+        </foreach>
+    </delete>
+</mapper>

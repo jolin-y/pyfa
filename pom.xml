@@ -217,6 +217,7 @@
         <module>ruoyi-generator</module>
         <module>ruoyi-common</module>
         <module>service</module>
+        <module>xpu-common</module>
     </modules>
     <packaging>pom</packaging>
 

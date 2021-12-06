@@ -68,6 +68,13 @@
             <version>3.7.0</version>
         </dependency>
 
+        <!-- 导入导出-->
+        <dependency>
+            <groupId>com.ruoyi</groupId>
+            <artifactId>xpu-common</artifactId>
+            <version>3.7.0</version>
+        </dependency>
+
     </dependencies>
 
     <build>

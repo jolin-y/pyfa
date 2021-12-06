@@ -311,7 +311,9 @@ export default {
       },
       // 表单参数
       form: {
-        // pyfaId: null,
+        // 用于初始化默认下拉框 '1'表示'2020版'
+        pyfaId: '1',
+
         // describe: null,
         // goal1: null,
         // goal2: null,
@@ -329,7 +331,11 @@ export default {
   },
   created() {
     this.getList();
-    // this.form.pyfaId =
+
+    // 默认下拉框选 '1'对应的版本号
+    // this.form.pyfaId = '1';
+    this.getValue();
+
     // this.options = this.dict.type.xpu_pyfa_version;
     // console.log(this.options);
     //
@@ -344,19 +350,13 @@ export default {
           // response.data.pyfaId = this.form.pyfaId;
           this.form = response.data;
 
-          // // this.form = response.data;
-          // this.form.goalId= response.data.goalId;
-          // this.form.describe= response.data.describe;
-          // this.form.goal1= response.data.goal1;
-          // this.form.goal2= response.data.goal2;
-          // this.form.goal3= response.data.goal3;
-          // this.form.goal4= response.data.goal4;
-          // this.form.goal5= response.data.goal5;
         }
         else {
           const tmp = this.form.pyfaId;
           this.reset();
           this.form.pyfaId = tmp;
+
+          this.$modal.alert("无数据,可新增");
 
         }
 

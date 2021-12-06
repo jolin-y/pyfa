@@ -65,10 +65,11 @@
 
 <!--      <el-table-column label="父要求id" prop="parentId" />-->
 <!--      <el-table-column label="祖级列表" align="center" prop="ancestors" />-->
-      <el-table-column label="毕业要求名称" align="center" prop="byyqName" />
-      <el-table-column label="显示顺序" align="center" prop="orderNum" />
+
+      <el-table-column label="毕业要求名称" prop="byyqName" width="200" />
+      <el-table-column label="排序" align="center" prop="orderNum" width="150" />
       <el-table-column label="毕业要求内容" align="center" prop="byyqContent" />
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+      <el-table-column label="操作" align="center" class-name="small-padding fixed-width" width="200">
         <template slot-scope="scope">
           <el-button
             size="mini"
