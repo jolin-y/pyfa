@@ -1,9 +1,10 @@
 package com.ruoyi.drdc.domain;
 
+import com.ruoyi.common.annotation.Excel;
+import com.ruoyi.common.annotation.Word;
+import com.ruoyi.common.core.domain.BaseEntity;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import com.ruoyi.common.annotation.Excel;
-import com.ruoyi.common.core.domain.BaseEntity;
 
 /**
  * 教师信息对象 c_gj_teacher
@@ -16,14 +17,17 @@ public class CGjTeacher extends BaseEntity
     private static final long serialVersionUID = 1L;
 
     /** 工号 */
+    @Word
     @Excel(name = "工号")
     private Long teacherId;
 
     /** 姓名 */
+    @Word
     @Excel(name = "姓名")
     private String teacherName;
 
     /** 学历 */
+    @Word(readConverterExp = "1=博士研究生,2=硕士研究生,3=大学本科")
     @Excel(name = "学历", readConverterExp = "1=博士研究生,2=硕士研究生,3=大学本科")
     private Long degreeId;
 

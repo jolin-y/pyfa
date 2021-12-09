@@ -38,9 +38,19 @@ public enum BusinessType
     EXPORT,
 
     /**
+     * 导出word
+     */
+    EXPORTWORD,
+
+    /**
      * 导入
      */
     IMPORT,
+
+    /**
+     * 导入word
+     */
+    IMPORTWORD,
 
     /**
      * 强退

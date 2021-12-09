@@ -69,6 +69,18 @@
           v-hasPermi="['drdc:teacherInfo:export']"
         >导出</el-button>
       </el-col>
+
+      <el-col :span="1.5">
+        <el-button
+          type="warning"
+          plain
+          icon="el-icon-download"
+          size="mini"
+          :loading="exportWordLoading"
+          @click="handleExportWord"
+          v-hasPermi="['drdc:teacherInfo:export']"
+        >导出word</el-button>
+      </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
@@ -131,7 +143,7 @@
 </template>
 
 <script>
-import { listTeacherInfo, getTeacherInfo, delTeacherInfo, addTeacherInfo, updateTeacherInfo, exportTeacherInfo } from "@/api/drdc/teacherInfo";
+import { listTeacherInfo, getTeacherInfo, delTeacherInfo, addTeacherInfo, updateTeacherInfo, exportTeacherInfo, exportTeacherInfoWord } from "@/api/drdc/teacherInfo";
 
 export default {
   name: "TeacherInfo",
@@ -142,6 +154,7 @@ export default {
       loading: true,
       // 导出遮罩层
       exportLoading: false,
+      exportWordLoading: false,
       // 选中数组
       ids: [],
       // 非单个禁用
@@ -273,6 +286,17 @@ export default {
       }).then(response => {
         this.$download.name(response.msg);
         this.exportLoading = false;
+      }).catch(() => {});
+    },
+    /** 导出word按钮操作 */
+    handleExportWord() {
+      const queryParams = this.queryParams;
+      this.$modal.confirm('是否确认导出教师信息word？').then(() => {
+        this.exportWordLoading = true;
+        return exportTeacherInfoWord(queryParams);
+      }).then(response => {
+        this.$download.name(response.msg);
+        this.exportWordLoading = false;
       }).catch(() => {});
     }
   }

@@ -51,3 +51,12 @@ export function exportTeacherInfo(query) {
     params: query
   })
 }
+
+// 导出教师信息word
+export function exportTeacherInfoWord(query) {
+  return request({
+    url: '/drdc/teacherInfo/exportWord',
+    method: 'get',
+    params: query
+  })
+}

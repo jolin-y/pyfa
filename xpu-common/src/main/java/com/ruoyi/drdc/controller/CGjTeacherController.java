@@ -6,13 +6,17 @@ import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.common.utils.poi.ExcelUtil;
+import com.ruoyi.drdc.common.WordUtil;
 import com.ruoyi.drdc.domain.CGjTeacher;
 import com.ruoyi.drdc.service.ICGjTeacherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 教师信息Controller
@@ -51,6 +55,46 @@ public class CGjTeacherController extends BaseController
         ExcelUtil<CGjTeacher> util = new ExcelUtil<CGjTeacher>(CGjTeacher.class);
         return util.exportExcel(list, "教师信息数据");
     }
+
+    /**
+     * 导出教师信息列表word
+     */
+    @PreAuthorize("@ss.hasPermi('drdc:teacherInfo:export')")
+    @Log(title = "教师信息", businessType = BusinessType.EXPORTWORD)
+    @GetMapping("/exportWord")
+    public AjaxResult exportWord(CGjTeacher cGjTeacher)
+    {
+        List<CGjTeacher> list = cGjTeacherService.selectCGjTeacherList(cGjTeacher);
+        System.out.println(list);
+        WordUtil<CGjTeacher> util = new WordUtil<CGjTeacher>(CGjTeacher.class);
+//        return util.exportExcel(list, "教师信息数据");
+
+
+        return util.exportWord(list,"教师信息统计word");
+
+    }
+
+
+    /**
+     * list转Map<String,Object>
+     */
+    public static List<Map<String, Object>> toListMap(List<CGjTeacher> userList) {
+        List<Map<String, Object>> result = new ArrayList<>();
+        Map<String, Object> map;
+        for (CGjTeacher user : userList) {
+            map = new HashMap<>();
+            map.put("teacherId", user.getTeacherId());
+            map.put("teacherName", user.getTeacherName());
+            map.put("degree", user.getDegreeId());
+            result.add(map);
+        }
+        return result;
+    }
+
+
+
+
+
 
     /**
      * 获取教师信息详细信息
