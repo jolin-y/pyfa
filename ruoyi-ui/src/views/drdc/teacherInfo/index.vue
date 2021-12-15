@@ -10,15 +10,29 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
+<!--      <el-form-item label="学历" prop="degreeId">-->
+<!--        <el-input-->
+<!--          v-model="queryParams.degreeId"-->
+<!--          placeholder="请输入学历"-->
+<!--          clearable-->
+<!--          size="small"-->
+<!--          @keyup.enter.native="handleQuery"-->
+<!--        />-->
+<!--      </el-form-item>-->
+
       <el-form-item label="学历" prop="degreeId">
-        <el-input
-          v-model="queryParams.degreeId"
-          placeholder="请输入学历"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-        />
+        <el-select v-model="queryParams.degreeId" placeholder="请选择学历" clearable size="small">
+          <el-option
+            v-for="dict in dict.type.c_gj_degree"
+            :key="dict.value"
+            :label="dict.label"
+            :value="dict.value"
+          />
+        </el-select>
       </el-form-item>
+
+
+
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
@@ -58,6 +72,18 @@
           v-hasPermi="['drdc:teacherInfo:remove']"
         >删除</el-button>
       </el-col>
+
+      <el-col :span="1.5">
+        <el-button
+          type="info"
+          plain
+          icon="el-icon-upload2"
+          size="mini"
+          @click="handleImportTeacher"
+          v-hasPermi="['drdc:teacherInfo:import']"
+        >导入</el-button>
+      </el-col>
+
       <el-col :span="1.5">
         <el-button
           type="warning"
@@ -67,7 +93,7 @@
           :loading="exportLoading"
           @click="handleExport"
           v-hasPermi="['drdc:teacherInfo:export']"
-        >导出</el-button>
+        >导出excel</el-button>
       </el-col>
 
       <el-col :span="1.5">
@@ -86,11 +112,11 @@
 
     <el-table v-loading="loading" :data="teacherInfoList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="工号" align="center" prop="teacherId" />
+      <el-table-column label="工号" align="center" prop="teacherId" width="250"/>
       <el-table-column label="姓名" align="center" prop="teacherName" />
 <!--      <el-table-column label="学历" align="center" prop="degreeId" />-->
 
-      <el-table-column prop="degreeId" label="学历" width="100">
+      <el-table-column prop="degreeId" label="学历" width="150">
         <template slot-scope="scope">
           <dict-tag :options="dict.type.c_gj_degree" :value="scope.row.degreeId"/>
         </template>
@@ -130,20 +156,66 @@
         <el-form-item label="姓名" prop="teacherName">
           <el-input v-model="form.teacherName" placeholder="请输入姓名" />
         </el-form-item>
-        <el-form-item label="学历" prop="degreeId">
-          <el-input v-model="form.degreeId" placeholder="请输入学历" />
+<!--        <el-form-item label="学历" prop="degreeId">-->
+<!--          <el-input v-model="form.degreeId" placeholder="请输入学历" />-->
+<!--        </el-form-item>-->
+
+<!--        <el-form-item label="学历" prop="degreeId">-->
+        <el-form-item label="学历">
+          <el-select v-model="form.degreeId" placeholder="请选择学历">
+            <el-option
+              v-for="dict in dict.type.c_gj_degree"
+              :key="dict.value"
+              :label="dict.label"
+              :value="dict.value"
+            ></el-option>
+          </el-select>
         </el-form-item>
+
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm">确 定</el-button>
         <el-button @click="cancel">取 消</el-button>
       </div>
     </el-dialog>
+
+
+    <!-- 用户导入对话框 -->
+    <el-dialog :title="upload.title" :visible.sync="upload.open" width="400px" append-to-body>
+      <el-upload
+        ref="upload"
+        :limit="1"
+        accept=".xlsx, .xls"
+        :headers="upload.headers"
+        :action="upload.url + '?updateSupport=' + upload.updateSupport"
+        :disabled="upload.isUploading"
+        :on-progress="handleFileUploadProgressTeacher"
+        :on-success="handleFileSuccessTeacher"
+        :auto-upload="false"
+        drag
+      >
+        <i class="el-icon-upload"></i>
+        <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+        <div class="el-upload__tip text-center" slot="tip">
+          <div class="el-upload__tip" slot="tip">
+            <el-checkbox v-model="upload.updateSupport" /> 是否更新已经存在的用户数据
+          </div>
+          <span>仅允许导入xls、xlsx格式文件。</span>
+          <el-link type="primary" :underline="false" style="font-size:12px;vertical-align: baseline;" @click="importTeacherTemplate">下载模板</el-link>
+        </div>
+      </el-upload>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="submitFileFormTeacher">确 定</el-button>
+        <el-button @click="upload.open = false">取 消</el-button>
+      </div>
+    </el-dialog>
+
   </div>
 </template>
 
 <script>
-import { listTeacherInfo, getTeacherInfo, delTeacherInfo, addTeacherInfo, updateTeacherInfo, exportTeacherInfo, exportTeacherInfoWord } from "@/api/drdc/teacherInfo";
+import { listTeacherInfo, getTeacherInfo, delTeacherInfo, addTeacherInfo, updateTeacherInfo, exportTeacherInfo, exportTeacherInfoWord, importTeacherTemplate } from "@/api/drdc/teacherInfo";
+import { getToken } from "@/utils/auth";
 
 export default {
   name: "TeacherInfo",
@@ -171,6 +243,25 @@ export default {
       title: "",
       // 是否显示弹出层
       open: false,
+
+
+      // 用户导入参数
+      upload: {
+        // 是否显示弹出层（用户导入）
+        open: false,
+        // 弹出层标题（用户导入）
+        title: "",
+        // 是否禁用上传
+        isUploading: false,
+        // 是否更新已经存在的用户数据
+        updateSupport: 0,
+        // 设置上传的请求头部
+        headers: { Authorization: "Bearer " + getToken() },
+        // 上传的地址
+        url: process.env.VUE_APP_BASE_API + "drdc/teacherInfo/importTeacherData"
+      },
+
+
       // 查询参数
       queryParams: {
         pageNum: 1,
@@ -288,6 +379,8 @@ export default {
         this.exportLoading = false;
       }).catch(() => {});
     },
+
+
     /** 导出word按钮操作 */
     handleExportWord() {
       const queryParams = this.queryParams;
@@ -298,7 +391,36 @@ export default {
         this.$download.name(response.msg);
         this.exportWordLoading = false;
       }).catch(() => {});
+    },
+
+    /** 导入按钮操作 */
+    handleImportTeacher() {
+      this.upload.title = "用户导入";
+      this.upload.open = true;
+    },
+    /** 下载模板操作 */
+    importTeacherTemplate() {
+      importTeacherTemplate().then(response => {
+        this.$download.name(response.msg);
+      });
+    },
+    // 文件上传中处理
+    handleFileUploadProgressTeacher(event, file, fileList) {
+      this.upload.isUploading = true;
+    },
+    // 文件上传成功处理
+    handleFileSuccessTeacher(response, file, fileList) {
+      this.upload.open = false;
+      this.upload.isUploading = false;
+      this.$refs.upload.clearFiles();
+      this.$alert(response.msg, "导入结果", { dangerouslyUseHTMLString: true });
+      this.getList();
+    },
+    // 提交上传文件
+    submitFileFormTeacher() {
+      this.$refs.upload.submit();
     }
+
   }
 };
 </script>

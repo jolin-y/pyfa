@@ -41,7 +41,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where goal_id = #{goalId}
     </select>
 
-    <select id="selectCPyGoalByPyfaId" parameterType="Long" resultMap="CPyGoalResult">
+<!--    <select id="selectCPyGoalByPyfaId" parameterType="Long" resultMap="CPyGoalResult">-->
+    <select id="selectCPyGoalByPyfaId" parameterType="String" resultMap="CPyGoalResult">
         <include refid="selectCPyGoalVo"/>
         where pyfa_id = #{pyfaId}
     </select>

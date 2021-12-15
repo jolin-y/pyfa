@@ -29,7 +29,7 @@ public class CGjTeacher extends BaseEntity
     /** 学历 */
     @Word(readConverterExp = "1=博士研究生,2=硕士研究生,3=大学本科")
     @Excel(name = "学历", readConverterExp = "1=博士研究生,2=硕士研究生,3=大学本科")
-    private Long degreeId;
+    private String degreeId;
 
     public void setTeacherId(Long teacherId) 
     {
@@ -49,12 +49,12 @@ public class CGjTeacher extends BaseEntity
     {
         return teacherName;
     }
-    public void setDegreeId(Long degreeId) 
+    public void setDegreeId(String degreeId)
     {
         this.degreeId = degreeId;
     }
 
-    public Long getDegreeId() 
+    public String getDegreeId()
     {
         return degreeId;
     }

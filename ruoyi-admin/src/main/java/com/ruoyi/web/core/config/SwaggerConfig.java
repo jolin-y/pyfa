@@ -110,7 +110,8 @@ public class SwaggerConfig
         return new ApiInfoBuilder()
                 // 设置标题
 //                .title("标题：若依管理系统_接口文档")
-                .title("标题：XPU管理系统_接口文档")
+//                .title("标题：XPU管理系统_接口文档")
+                .title("标题：高等教育与质量评估系统_接口文档")
                 // 描述
                 .description("描述：用于管理集团旗下公司的人员信息,具体包括XXX,XXX模块...")
                 // 作者信息

@@ -68,7 +68,8 @@ public class CPyGoalController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('pyfa:goal:query')")
     @GetMapping(value = "/pyfaId/{pyfaId}")
-    public AjaxResult getGoalPyfaId(@PathVariable("pyfaId") Long pyfaId)
+//    public AjaxResult getGoalPyfaId(@PathVariable("pyfaId") Long pyfaId)
+    public AjaxResult getGoalPyfaId(@PathVariable("pyfaId") String pyfaId)
     {
         return AjaxResult.success(cPyGoalService.selectCPyGoalByPyfaId(pyfaId));
     }

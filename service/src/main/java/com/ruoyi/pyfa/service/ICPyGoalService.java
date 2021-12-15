@@ -26,7 +26,8 @@ public interface ICPyGoalService
      * @param pyfaId 培养目标表培养方案id
      * @return 培养目标表
      */
-    public CPyGoal selectCPyGoalByPyfaId(Long pyfaId);
+//    public CPyGoal selectCPyGoalByPyfaId(Long pyfaId);
+    public CPyGoal selectCPyGoalByPyfaId(String pyfaId);
 
 
     /**

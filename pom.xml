@@ -11,7 +11,8 @@
     <name>ruoyi</name>
     <url>http://www.ruoyi.vip</url>
 <!--    <description>若依管理系统</description>-->
-    <description>XPU管理系统</description>
+<!--    <description>XPU管理系统</description>-->
+    <description>高等教育与质量评估系统</description>
 
     <properties>
         <ruoyi.version>3.7.0</ruoyi.version>

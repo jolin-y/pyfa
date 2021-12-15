@@ -43,7 +43,11 @@ public class CPyGoalServiceImpl implements ICPyGoalService
      * @return 培养目标表
      */
     @Override
-    public CPyGoal selectCPyGoalByPyfaId(Long pyfaId)
+//    public CPyGoal selectCPyGoalByPyfaId(Long pyfaId)
+//    {
+//        return cPyGoalMapper.selectCPyGoalByPyfaId(pyfaId);
+//    }
+    public CPyGoal selectCPyGoalByPyfaId(String pyfaId)
     {
         return cPyGoalMapper.selectCPyGoalByPyfaId(pyfaId);
     }

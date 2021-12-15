@@ -38,7 +38,8 @@ export default {
     return {
       // 侧边栏的title
       // title: '若依管理系统',
-      title: 'XPU管理系统',
+      // title: 'XPU管理系统',
+      title: '高等教育与质量评估系统',
       logo: logoImg
     }
   }

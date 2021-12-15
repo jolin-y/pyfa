@@ -31,11 +31,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         insert into c_gj_teacher
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="teacherName != null and teacherName != ''">teacher_name,</if>
-            <if test="degreeId != null">degree_id,</if>
+            <if test="degreeId != null and degreeId != ''">degree_id,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="teacherName != null and teacherName != ''">#{teacherName},</if>
-            <if test="degreeId != null">#{degreeId},</if>
+            <if test="degreeId != null and degreeId != ''">#{degreeId},</if>
          </trim>
     </insert>
 
@@ -43,7 +43,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         update c_gj_teacher
         <trim prefix="SET" suffixOverrides=",">
             <if test="teacherName != null and teacherName != ''">teacher_name = #{teacherName},</if>
-            <if test="degreeId != null">degree_id = #{degreeId},</if>
+            <if test="degreeId != null and degreeId != ''">degree_id = #{degreeId},</if>
         </trim>
         where teacher_id = #{teacherId}
     </update>

@@ -7,7 +7,8 @@ function resolve(dir) {
 
 // const name = process.env.VUE_APP_TITLE || '若依管理系统' // 网页标题
 // const name = process.env.VUE_APP_TITLE || 'XPU管理系统' // 网页标题
-const name = 'XPU管理系统' // 网页标题
+// const name = 'XPU管理系统' // 网页标题
+const name = '高等教育与质量评估系统' // 网页标题
 
 const port = process.env.port || process.env.npm_config_port || 80 // 端口
 

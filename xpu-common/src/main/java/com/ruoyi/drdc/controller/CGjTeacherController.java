@@ -12,6 +12,7 @@ import com.ruoyi.drdc.service.ICGjTeacherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -138,4 +139,26 @@ public class CGjTeacherController extends BaseController
     {
         return toAjax(cGjTeacherService.deleteCGjTeacherByTeacherIds(teacherIds));
     }
+
+
+    @Log(title = "用户管理", businessType = BusinessType.IMPORT)
+    @PreAuthorize("@ss.hasPermi('drdc:teacherInfo:import')")
+    @PostMapping("/importTeacherData")
+    public AjaxResult importTeacherData(MultipartFile file, boolean updateSupport) throws Exception
+    {
+        ExcelUtil<CGjTeacher> util = new ExcelUtil<CGjTeacher>(CGjTeacher.class);
+        List<CGjTeacher> userList = util.importExcel(file.getInputStream());
+        String operName = getUsername();
+        String message = cGjTeacherService.importTeacher(userList, updateSupport, operName);
+        return AjaxResult.success(message);
+    }
+
+    @GetMapping("/importTeacherTemplate")
+    public AjaxResult importTeacherTemplate()
+    {
+        ExcelUtil<CGjTeacher> util = new ExcelUtil<CGjTeacher>(CGjTeacher.class);
+        return util.importTemplateExcel("教师数据");
+    }
+
+
 }

@@ -60,3 +60,11 @@ export function exportTeacherInfoWord(query) {
     params: query
   })
 }
+
+// 下载用户导入模板
+export function importTeacherTemplate() {
+  return request({
+    url: '/drdc/teacherInfo/importTeacherTemplate',
+    method: 'get'
+  })
+}

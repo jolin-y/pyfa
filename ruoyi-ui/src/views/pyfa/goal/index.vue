@@ -92,8 +92,8 @@
 <!--    表单-->
     <el-form ref="form" :model="form" :rules="rules" label-width="80px">
 
-<!--      <el-form-item label="方案版本" prop="pyfaId">-->
-      <el-form-item label="方案版本">
+      <el-form-item label="方案版本" prop="pyfaId">
+<!--      <el-form-item label="方案版本">-->
         <el-select v-model="form.pyfaId" placeholder="培养方案版本" size="small" @change='getValue'>
           <el-option
             v-for="dict in dict.type.xpu_pyfa_version"
@@ -231,7 +231,7 @@
 <!--          <el-input v-model="form.pyfaId" placeholder="请输入培养方案id" />-->
 <!--        </el-form-item>-->
 
-        <el-form-item label="方案版本">
+        <el-form-item label="方案版本" prop="pyfaId">
           <el-select v-model="form.pyfaId" placeholder="培养方案版本" size="small" @change='getValue'>
             <el-option
               v-for="dict in dict.type.xpu_pyfa_version"
@@ -312,8 +312,9 @@ export default {
       // 表单参数
       form: {
         // 用于初始化默认下拉框 '1'表示'2020版'
-        pyfaId: '1',
+        // pyfaId: '1',
 
+        // pyfaId: null,
         // describe: null,
         // goal1: null,
         // goal2: null,
@@ -333,14 +334,21 @@ export default {
     this.getList();
 
     // 默认下拉框选 '1'对应的版本号
-    // this.form.pyfaId = '1';
+    this.form.pyfaId = '1';
     this.getValue();
+    // console.log(this.dicts)
 
     // this.options = this.dict.type.xpu_pyfa_version;
     // console.log(this.options);
     //
-    // let resdata=Object.assign({},this.options)
+
+    // let resdata=Object.assign({},this.options);
     // console.log(resdata)
+
+    // // console.log(this.selectDictLabel(this.dict.type.xpu_pyfa_version, "1"))
+    // console.log(Object.keys(this.options))
+
+
   },
   methods: {
     /** 表单下拉展示搜索结果 */
@@ -423,8 +431,8 @@ export default {
     },
     // 多选框选中数据
     handleSelectionChange(selection) {
-      this.ids = selection.map(item => item.goalId)
-      this.single = selection.length!==1
+      this.ids = selection.map(item => item.goalId);
+      this.single = selection.length!==1;
       this.multiple = !selection.length
     },
     /** 新增按钮操作 */
