@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.drdc.mapper.CGjZrjsyxsMapper">
+    
+    <resultMap type="CGjZrjsyxs" id="CGjZrjsyxsResult">
+        <result property="zrjsyxsId"    column="zrjsyxs_id"    />
+        <result property="xyzyId"    column="xyzy_id"    />
+        <result property="teacherNum"    column="teacher_num"    />
+        <result property="gjzcNum"    column="gjzc_num"    />
+        <result property="studentNum"    column="student_num"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectCGjZrjsyxsVo">
+        select zrjsyxs_id, xyzy_id, teacher_num, gjzc_num, student_num, create_by, create_time, update_by, update_time from c_gj_zrjsyxs
+    </sql>
+
+    <select id="selectCGjZrjsyxsList" parameterType="CGjZrjsyxs" resultMap="CGjZrjsyxsResult">
+        <include refid="selectCGjZrjsyxsVo"/>
+        <where>  
+            <if test="xyzyId != null "> and xyzy_id = #{xyzyId}</if>
+            <if test="teacherNum != null "> and teacher_num = #{teacherNum}</if>
+            <if test="gjzcNum != null "> and gjzc_num = #{gjzcNum}</if>
+            <if test="studentNum != null "> and student_num = #{studentNum}</if>
+        </where>
+    </select>
+    
+    <select id="selectCGjZrjsyxsByZrjsyxsId" parameterType="Long" resultMap="CGjZrjsyxsResult">
+        <include refid="selectCGjZrjsyxsVo"/>
+        where zrjsyxs_id = #{zrjsyxsId}
+    </select>
+        
+    <insert id="insertCGjZrjsyxs" parameterType="CGjZrjsyxs" useGeneratedKeys="true" keyProperty="zrjsyxsId">
+        insert into c_gj_zrjsyxs
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="xyzyId != null">xyzy_id,</if>
+            <if test="teacherNum != null">teacher_num,</if>
+            <if test="gjzcNum != null">gjzc_num,</if>
+            <if test="studentNum != null">student_num,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="xyzyId != null">#{xyzyId},</if>
+            <if test="teacherNum != null">#{teacherNum},</if>
+            <if test="gjzcNum != null">#{gjzcNum},</if>
+            <if test="studentNum != null">#{studentNum},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateCGjZrjsyxs" parameterType="CGjZrjsyxs">
+        update c_gj_zrjsyxs
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="xyzyId != null">xyzy_id = #{xyzyId},</if>
+            <if test="teacherNum != null">teacher_num = #{teacherNum},</if>
+            <if test="gjzcNum != null">gjzc_num = #{gjzcNum},</if>
+            <if test="studentNum != null">student_num = #{studentNum},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where zrjsyxs_id = #{zrjsyxsId}
+    </update>
+
+    <delete id="deleteCGjZrjsyxsByZrjsyxsId" parameterType="Long">
+        delete from c_gj_zrjsyxs where zrjsyxs_id = #{zrjsyxsId}
+    </delete>
+
+    <delete id="deleteCGjZrjsyxsByZrjsyxsIds" parameterType="String">
+        delete from c_gj_zrjsyxs where zrjsyxs_id in 
+        <foreach item="zrjsyxsId" collection="array" open="(" separator="," close=")">
+            #{zrjsyxsId}
+        </foreach>
+    </delete>
+</mapper>

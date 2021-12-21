@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.drdc.mapper.CGjXyzyMapper">
+    
+    <resultMap type="CGjXyzy" id="CGjXyzyResult">
+        <result property="xyzyId"    column="xyzy_id"    />
+        <result property="parentId"    column="parent_id"    />
+        <result property="ancestors"    column="ancestors"    />
+        <result property="xyzyDaima"    column="xyzy_daima"    />
+        <result property="xyzyName"    column="xyzy_name"    />
+        <result property="xyzyShortName"    column="xyzy_short_name"    />
+        <result property="xyzyZydm"    column="xyzy_zydm"    />
+        <result property="orderNum"    column="order_num"    />
+        <result property="xkml"    column="xkml"    />
+        <result property="zylb"    column="zylb"    />
+        <result property="remarks"    column="remarks"    />
+        <result property="zyCreatYear"    column="zy_creat_year"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectCGjXyzyVo">
+        select xyzy_id, parent_id, ancestors, xyzy_daima, xyzy_name, xyzy_short_name, xyzy_zydm, order_num, xkml, zylb, remarks, zy_creat_year, create_by, create_time, update_by, update_time from c_gj_xyzy
+    </sql>
+
+    <select id="selectCGjXyzyList" parameterType="CGjXyzy" resultMap="CGjXyzyResult">
+        <include refid="selectCGjXyzyVo"/>
+        <where>  
+            <if test="parentId != null "> and parent_id = #{parentId}</if>
+            <if test="ancestors != null  and ancestors != ''"> and ancestors = #{ancestors}</if>
+            <if test="xyzyDaima != null "> and xyzy_daima = #{xyzyDaima}</if>
+            <if test="xyzyName != null  and xyzyName != ''"> and xyzy_name = #{xyzyName}</if>
+            <if test="xyzyShortName != null  and xyzyShortName != ''"> and xyzy_short_name = #{xyzyShortName}</if>
+            <if test="xyzyZydm != null "> and xyzy_zydm = #{xyzyZydm}</if>
+            <if test="xkml != null  and xkml != ''"> and xkml = #{xkml}</if>
+            <if test="zylb != null  and zylb != ''"> and zylb = #{zylb}</if>
+            <if test="remarks != null  and remarks != ''"> and remarks = #{remarks}</if>
+            <if test="zyCreatYear != null  and zyCreatYear != ''"> and zy_creat_year = #{zyCreatYear}</if>
+        </where>
+    </select>
+    
+    <select id="selectCGjXyzyByXyzyId" parameterType="Long" resultMap="CGjXyzyResult">
+        <include refid="selectCGjXyzyVo"/>
+        where xyzy_id = #{xyzyId}
+    </select>
+
+
+    <sql id="selectCGjXyzyVoByXyzyDaima">
+        select xyzy_id, parent_id, ancestors, xyzy_daima, xyzy_name, xyzy_short_name, xyzy_zydm, order_num, xkml, zylb, remarks, zy_creat_year, create_by, create_time, update_by, update_time from c_gj_xyzy where xyzy_daima is not null
+    </sql>
+
+        
+    <insert id="insertCGjXyzy" parameterType="CGjXyzy" useGeneratedKeys="true" keyProperty="xyzyId">
+        insert into c_gj_xyzy
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="parentId != null">parent_id,</if>
+            <if test="ancestors != null">ancestors,</if>
+            <if test="xyzyDaima != null">xyzy_daima,</if>
+            <if test="xyzyName != null">xyzy_name,</if>
+            <if test="xyzyShortName != null">xyzy_short_name,</if>
+            <if test="xyzyZydm != null">xyzy_zydm,</if>
+            <if test="orderNum != null">order_num,</if>
+            <if test="xkml != null">xkml,</if>
+            <if test="zylb != null">zylb,</if>
+            <if test="remarks != null">remarks,</if>
+            <if test="zyCreatYear != null">zy_creat_year,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="parentId != null">#{parentId},</if>
+            <if test="ancestors != null">#{ancestors},</if>
+            <if test="xyzyDaima != null">#{xyzyDaima},</if>
+            <if test="xyzyName != null">#{xyzyName},</if>
+            <if test="xyzyShortName != null">#{xyzyShortName},</if>
+            <if test="xyzyZydm != null">#{xyzyZydm},</if>
+            <if test="orderNum != null">#{orderNum},</if>
+            <if test="xkml != null">#{xkml},</if>
+            <if test="zylb != null">#{zylb},</if>
+            <if test="remarks != null">#{remarks},</if>
+            <if test="zyCreatYear != null">#{zyCreatYear},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateCGjXyzy" parameterType="CGjXyzy">
+        update c_gj_xyzy
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="parentId != null">parent_id = #{parentId},</if>
+            <if test="ancestors != null">ancestors = #{ancestors},</if>
+            <if test="xyzyDaima != null">xyzy_daima = #{xyzyDaima},</if>
+            <if test="xyzyName != null">xyzy_name = #{xyzyName},</if>
+            <if test="xyzyShortName != null">xyzy_short_name = #{xyzyShortName},</if>
+            <if test="xyzyZydm != null">xyzy_zydm = #{xyzyZydm},</if>
+            <if test="orderNum != null">order_num = #{orderNum},</if>
+            <if test="xkml != null">xkml = #{xkml},</if>
+            <if test="zylb != null">zylb = #{zylb},</if>
+            <if test="remarks != null">remarks = #{remarks},</if>
+            <if test="zyCreatYear != null">zy_creat_year = #{zyCreatYear},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where xyzy_id = #{xyzyId}
+    </update>
+
+    <delete id="deleteCGjXyzyByXyzyId" parameterType="Long">
+        delete from c_gj_xyzy where xyzy_id = #{xyzyId}
+    </delete>
+
+    <delete id="deleteCGjXyzyByXyzyIds" parameterType="String">
+        delete from c_gj_xyzy where xyzy_id in 
+        <foreach item="xyzyId" collection="array" open="(" separator="," close=")">
+            #{xyzyId}
+        </foreach>
+    </delete>
+
+
+
+    <select id="selectChildrenXyzyById" parameterType="Long" resultMap="CGjXyzyResult">
+		select * from c_gj_xyzy where find_in_set(#{xyzyId}, ancestors)
+	</select>
+
+    <update id="updateXyzyChildren" parameterType="java.util.List">
+        update c_gj_xyzy set ancestors =
+        <foreach collection="xyzys" item="item" index="index"
+                 separator=" " open="case xyzy_id" close="end">
+            when #{item.xyzyId} then #{item.ancestors}
+        </foreach>
+        where xyzy_id in
+        <foreach collection="xyzys" item="item" index="index"
+                 separator="," open="(" close=")">
+            #{item.xyzyId}
+        </foreach>
+    </update>
+
+    <select id="selectCGjXyzyByXyzyDaima" parameterType="CGjXyzy" resultMap="CGjXyzyResult">
+        <include refid="selectCGjXyzyVoByXyzyDaima"/>
+        <where>
+            <if test="xyzyDaima != null and xyzyDaima != ''"> and xyzy_daima = #{xyzyDaima}</if>
+        </where>
+    </select>
+</mapper>

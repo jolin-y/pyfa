@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.drdc.mapper.CGjByyjyMapper">
+    
+    <resultMap type="CGjByyjy" id="CGjByyjyResult">
+        <result property="byyjyId"    column="byyjy_id"    />
+        <result property="xyzyId"    column="xyzy_id"    />
+        <result property="byl"    column="byl"    />
+        <result property="xwsyl"    column="xwsyl"    />
+        <result property="bysNum"    column="bys_num"    />
+        <result property="ccjyl"    column="ccjyl"    />
+        <result property="gcjyl"    column="gcjyl"    />
+        <result property="byYear"    column="by_year"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectCGjByyjyVo">
+        select byyjy_id, xyzy_id, byl, xwsyl, bys_num, ccjyl, gcjyl, by_year, create_by, create_time, update_by, update_time from c_gj_byyjy
+    </sql>
+
+    <select id="selectCGjByyjyList" parameterType="CGjByyjy" resultMap="CGjByyjyResult">
+        <include refid="selectCGjByyjyVo"/>
+        <where>  
+            <if test="xyzyId != null "> and xyzy_id = #{xyzyId}</if>
+            <if test="byl != null "> and byl = #{byl}</if>
+            <if test="xwsyl != null "> and xwsyl = #{xwsyl}</if>
+            <if test="bysNum != null "> and bys_num = #{bysNum}</if>
+            <if test="ccjyl != null "> and ccjyl = #{ccjyl}</if>
+            <if test="gcjyl != null "> and gcjyl = #{gcjyl}</if>
+            <if test="byYear != null  and byYear != ''"> and by_year = #{byYear}</if>
+        </where>
+    </select>
+    
+    <select id="selectCGjByyjyByByyjyId" parameterType="Long" resultMap="CGjByyjyResult">
+        <include refid="selectCGjByyjyVo"/>
+        where byyjy_id = #{byyjyId}
+    </select>
+        
+    <insert id="insertCGjByyjy" parameterType="CGjByyjy" useGeneratedKeys="true" keyProperty="byyjyId">
+        insert into c_gj_byyjy
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="xyzyId != null">xyzy_id,</if>
+            <if test="byl != null">byl,</if>
+            <if test="xwsyl != null">xwsyl,</if>
+            <if test="bysNum != null">bys_num,</if>
+            <if test="ccjyl != null">ccjyl,</if>
+            <if test="gcjyl != null">gcjyl,</if>
+            <if test="byYear != null">by_year,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="xyzyId != null">#{xyzyId},</if>
+            <if test="byl != null">#{byl},</if>
+            <if test="xwsyl != null">#{xwsyl},</if>
+            <if test="bysNum != null">#{bysNum},</if>
+            <if test="ccjyl != null">#{ccjyl},</if>
+            <if test="gcjyl != null">#{gcjyl},</if>
+            <if test="byYear != null">#{byYear},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateCGjByyjy" parameterType="CGjByyjy">
+        update c_gj_byyjy
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="xyzyId != null">xyzy_id = #{xyzyId},</if>
+            <if test="byl != null">byl = #{byl},</if>
+            <if test="xwsyl != null">xwsyl = #{xwsyl},</if>
+            <if test="bysNum != null">bys_num = #{bysNum},</if>
+            <if test="ccjyl != null">ccjyl = #{ccjyl},</if>
+            <if test="gcjyl != null">gcjyl = #{gcjyl},</if>
+            <if test="byYear != null">by_year = #{byYear},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where byyjy_id = #{byyjyId}
+    </update>
+
+    <delete id="deleteCGjByyjyByByyjyId" parameterType="Long">
+        delete from c_gj_byyjy where byyjy_id = #{byyjyId}
+    </delete>
+
+    <delete id="deleteCGjByyjyByByyjyIds" parameterType="String">
+        delete from c_gj_byyjy where byyjy_id in 
+        <foreach item="byyjyId" collection="array" open="(" separator="," close=")">
+            #{byyjyId}
+        </foreach>
+    </delete>
+</mapper>

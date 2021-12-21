@@ -1,13 +1,17 @@
 package com.ruoyi.drdc.common;
 
 import com.deepoove.poi.XWPFTemplate;
+import com.deepoove.poi.config.Configure;
+import com.deepoove.poi.policy.HackLoopTableRenderPolicy;
 import com.ruoyi.common.annotation.Word;
 import com.ruoyi.common.annotation.Words;
 import com.ruoyi.common.config.RuoYiConfig;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.text.Convert;
 import com.ruoyi.common.exception.UtilException;
+import com.ruoyi.common.utils.DictUtils;
 import com.ruoyi.common.utils.StringUtils;
+import com.ruoyi.drdc.domain.CGjXyzy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,6 +28,9 @@ import java.util.stream.Collectors;
  */
 public class WordUtil<T>
 {
+//    @Autowired
+//    private ICGjXyzyService icGjXyzyService;
+
     private static final Logger log = LoggerFactory.getLogger(WordUtil.class);
 
     /**
@@ -92,20 +99,26 @@ public class WordUtil<T>
         OutputStream out = null;
         try
         {
-            Map<String, Object> paramMap = getParamMap();
+//            Map<String, Object> paramMap = getParamMap();
+
 //            Map<String, Object> paramMap = getParamMap2();
 //            HackLoopTableRenderPolicy  policy = new HackLoopTableRenderPolicy();
 //            Configure config = Configure.newBuilder().bind("GJteacher_List", policy).build();
 
+            Map<String, Object> paramMap = getParamMap3();
+            HackLoopTableRenderPolicy policy = new HackLoopTableRenderPolicy();
+            Configure config = Configure.newBuilder().bind("GJxyzy_List", policy).build();
 
-            String templatePath = "E:\\code_practice\\RuoYi-Vue-master\\xpu-common\\src\\main\\resources\\static\\template\\gjTeacher_template.docx";
+
+//            String templatePath = "E:\\code_practice\\RuoYi-Vue-master\\xpu-common\\src\\main\\resources\\static\\template\\gjTeacher_template.docx";
 //            String templatePath = "E:\\code_practice\\RuoYi-Vue-master\\xpu-common\\src\\main\\resources\\static\\template\\gjTeacher_template2.docx";
+            String templatePath = "E:\\code_practice\\RuoYi-Vue-master\\xpu-common\\src\\main\\resources\\static\\template\\gjXyzy_template.docx";
 
             String filename = encodingFilename(wordName);
             out = new FileOutputStream(getAbsoluteFile(filename));
 
-            XWPFTemplate template = XWPFTemplate.compile(templatePath).render(paramMap);
-//            XWPFTemplate template = XWPFTemplate.compile(templatePath,config).render(paramMap);
+//            XWPFTemplate template = XWPFTemplate.compile(templatePath).render(paramMap);
+            XWPFTemplate template = XWPFTemplate.compile(templatePath,config).render(paramMap);
 
             template.write(out);//将template写到OutputStream中
             out.flush();
@@ -277,6 +290,241 @@ public class WordUtil<T>
 
 
 
+    /**
+     * 写入模板需要的数据到Word
+     * 教师信息 表格
+     */
+    public Map<String, Object> getParamMap3()
+    {
+        Map<String, Object> params = new HashMap<>();
+//        params.put("xyzy_num",list.size());
+
+        try {
+//            学科门类、专业类别、备注信息
+            Map<Object, Integer> xkzyDictMap = new HashMap<>();
+
+//            学科专业
+            List<Map<String, Object>> xkzyMapResult = new ArrayList<>();
+            Map<String, Object> xkzyMap;
+
+            for (int index = 0; index < list.size(); index++)
+            {
+
+                xkzyMap = new HashMap<>();
+
+                T vo = (T) list.get(index);
+
+//                // 取年份
+//                if (((CGjXyzy) vo).getParentId() == 0)
+//                {
+//                    params.put("xyzyYear",((CGjXyzy) vo).getYear());
+//                }
+
+//                int column = 0;
+
+//                String daiMa = ((CGjXyzy) vo).getXyzyDaima();
+
+//                int ancestorNum = ((CGjXyzy) vo).getAncestors().split(",").length;
+//                if (ancestorNum == 3)
+                if (getXyzyChildList(list, (CGjXyzy) vo).size() == 0)
+                {
+                    for (Object[] os : fields)
+                    {
+                        Field field = (Field) os[0];
+                        Word word = (Word) os[1];
+
+                        String fieldStr = field.getName();
+
+                        Object value = getTargetValue(vo, field, word);
+                        String dateFormat = word.dateFormat();
+                        String readConverterExp = word.readConverterExp();
+                        String separator = word.separator();
+                        String dictType = word.dictType();
+                        if (StringUtils.isNotEmpty(readConverterExp) && StringUtils.isNotNull(value))
+                        {
+//                            没用到
+                            Object convertValue = convertByExp(Convert.toStr(value), readConverterExp, separator);
+
+//                        Integer counts = xkzyDictMap.get(convertValue);
+//                        xkzyDictMap.put(convertValue, counts == null ? 1 : ++counts);
+
+                            xkzyMap.put(fieldStr, convertValue);
+
+                        }
+                        else if (StringUtils.isNotEmpty(dictType) && StringUtils.isNotNull(value))
+                        {
+//                            学科门类、专业类别、备注信息
+                            Object convertValue = convertDictByExp(Convert.toStr(value), dictType, separator);
+
+                            // 只存学科门类
+                            if (fieldStr.equals("xkml")) {
+                                Integer counts = xkzyDictMap.get(convertValue);
+                                xkzyDictMap.put(convertValue, counts == null ? 1 : ++counts);
+                            }
+
+                            xkzyMap.put(fieldStr, convertValue);
+
+                        }
+                        else {
+                            xkzyMap.put(fieldStr, value);  // 专业名称
+
+//                            ((CGjXyzy) vo).getParentId(); //学院id
+
+                            for (int index2 = 0; index2 < list.size(); index2++) {
+
+                                T vo2 = (T) list.get(index2);
+
+                                if (((CGjXyzy) vo2).getXyzyId() == ((CGjXyzy) vo).getParentId())
+                                {
+                                    xkzyMap.put("xyName", ((CGjXyzy) vo2).getXyzyName());  // 学院名称
+
+                                    List<CGjXyzy> xyzyChildList = getXyzyChildList(list, (CGjXyzy) vo2);  // 学院的子专业节点
+                                    xkzyMap.put("zyNum", xyzyChildList.size());  // 专业数量
+
+//                                    xkzyMap.put("zyNum", ((CGjXyzy) vo2).getChildNum());  // 专业数量
+
+
+//                                    List<CGjXyzy> childlist=new ArrayList<>();
+//                                   icGjXyzyService.getChildList(childlist,(CGjXyzy) vo2);
+//                                   for(CGjXyzy list:childlist){
+//                                       System.out.println(list);
+//                                   }
+
+                                    break;
+                                }
+                            }
+
+                        }
+                    }
+                    xkzyMapResult.add(xkzyMap);
+                }
+
+            }
+
+//            {工学=2, 预警=1}
+            xkzyDictMap.entrySet().forEach(e -> params.put(e.getKey().toString(), e.getValue()));
+
+            params.put("GJxyzy_List",xkzyMapResult);
+
+            params.put("xyzyNum",xkzyMapResult.size());
+            params.put("xkmlNum",xkzyDictMap.size());
+
+            params.put("xkmlKeys",xkzyDictMap.keySet().toString());
+//            xkzyDictMap.keySet().toString()
+
+
+        }catch (Exception e)
+        {
+            log.error("导出Word失败{}", e);
+        }
+
+        return params;
+    }
+
+
+    /**
+     * 得到学院的子节点列表
+     */
+    public List<CGjXyzy> getXyzyChildList(List<T> list, CGjXyzy t)
+    {
+        List<CGjXyzy> tlist = new ArrayList<CGjXyzy>();
+        Iterator<T> it = list.iterator();
+        while (it.hasNext())
+        {
+            CGjXyzy n = (CGjXyzy) it.next();
+            if (StringUtils.isNotNull(n.getParentId()) && n.getParentId().longValue() == t.getXyzyId().longValue())
+            {
+                tlist.add(n);
+            }
+        }
+        return tlist;
+    }
+
+
+
+
+//    /**
+//     * 写入模板需要的数据到Word
+//     * 教师信息 表格
+//     */
+//    public Map<String, Object> getParamMap3()
+//    {
+//        Map<String, Object> params = new HashMap<>();
+//        params.put("xyzy_num",list.size());
+//
+//        try {
+////            学科门类
+//            Map<Object, Integer> xkzyDictMap = new HashMap<>();
+//
+////            学科专业
+//            List<Map<String, Object>> xkzyMapResult = new ArrayList<>();
+//            Map<String, Object> xkzyMap;
+//
+//            for (int index = 0; index < list.size(); index++)
+//            {
+//
+//                xkzyMap = new HashMap<>();
+//
+//                T vo = (T) list.get(index);
+////                int column = 0;
+//
+//                int ancestorNum = ((CGjXyzy) vo).getAncestors().split(",").length;
+////                String daiMa = ((CGjXyzy) vo).getXyzyDaima();
+//
+//                for (Object[] os : fields)
+//                {
+//                    Field field = (Field) os[0];
+//                    Word word = (Word) os[1];
+//
+//                    String fieldStr = field.getName();
+//
+//                    Object value = getTargetValue(vo, field, word);
+//                    String dateFormat = word.dateFormat();
+//                    String readConverterExp = word.readConverterExp();
+//                    String separator = word.separator();
+//                    String dictType = word.dictType();
+//                    if (StringUtils.isNotEmpty(readConverterExp) && StringUtils.isNotNull(value))
+//                    {
+//                        Object convertValue = convertByExp(Convert.toStr(value), readConverterExp, separator);
+//
+////                        Integer counts = xkzyDictMap.get(convertValue);
+////                        xkzyDictMap.put(convertValue, counts == null ? 1 : ++counts);
+//
+//                        xkzyMap.put(fieldStr, convertValue);
+//
+//                    }
+//                    else if (StringUtils.isNotEmpty(dictType) && StringUtils.isNotNull(value))
+//                    {
+//                        Object convertValue = convertDictByExp(Convert.toStr(value), dictType, separator);
+//                        Integer counts = xkzyDictMap.get(convertValue);
+//                        xkzyDictMap.put(convertValue, counts == null ? 1 : ++counts);
+//
+//                        xkzyMap.put(fieldStr, convertValue);
+//
+//                    }
+//
+//                    else {
+//                        xkzyMap.put(fieldStr, value);
+//                    }
+//                }
+//                xkzyMapResult.add(xkzyMap);
+//            }
+//
+////            {工学=2, 预警=1}
+//            xkzyDictMap.entrySet().forEach(e -> params.put(e.getKey().toString(), e.getValue()));
+//
+//            params.put("GJxyzy_List",xkzyMapResult);
+//
+//        }catch (Exception e)
+//        {
+//            log.error("导出Word失败{}", e);
+//        }
+//
+//        return params;
+//    }
+
+
+
 //    /**
 //     * list转Map<String,Object>
 //     *     获得教师信息的map
@@ -297,6 +545,31 @@ public class WordUtil<T>
 
 
 
+    /**
+     * 解析字典值
+     *
+     * @param dictValue 字典值
+     * @param dictType 字典类型
+     * @param separator 分隔符
+     * @return 字典标签
+     */
+    public static String convertDictByExp(String dictValue, String dictType, String separator)
+    {
+        return DictUtils.getDictLabel(dictType, dictValue, separator);
+    }
+
+    /**
+     * 反向解析值字典值
+     *
+     * @param dictLabel 字典标签
+     * @param dictType 字典类型
+     * @param separator 分隔符
+     * @return 字典值
+     */
+    public static String reverseDictByExp(String dictLabel, String dictType, String separator)
+    {
+        return DictUtils.getDictValue(dictType, dictLabel, separator);
+    }
 
 
     /**
