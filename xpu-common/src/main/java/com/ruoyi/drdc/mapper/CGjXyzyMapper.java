@@ -1,6 +1,6 @@
 package com.ruoyi.drdc.mapper;
 
-import com.ruoyi.drdc.domain.CGjXyzy;
+import com.ruoyi.common.core.domain.entity.CGjXyzy;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;

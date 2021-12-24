@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.drdc.mapper.ViewGjZyjcMapper">
+    
+    <resultMap type="ViewGjZyjc" id="ViewGjZyjcResult">
+        <result property="xyzyId"    column="xyzy_id"    />
+        <result property="parentId"    column="parent_id"    />
+        <result property="ancestors"    column="ancestors"    />
+        <result property="xyzyDaima"    column="xyzy_daima"    />
+        <result property="xyzyName"    column="xyzy_name"    />
+        <result property="xyzyShortName"    column="xyzy_short_name"    />
+        <result property="xyzyZydm"    column="xyzy_zydm"    />
+        <result property="orderNum"    column="order_num"    />
+        <result property="xkml"    column="xkml"    />
+        <result property="zylb"    column="zylb"    />
+        <result property="remarks"    column="remarks"    />
+        <result property="zyCreatYear"    column="zy_creat_year"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="zrjsyxsId"    column="zrjsyxs_id"    />
+        <result property="teacherNum"    column="teacher_num"    />
+        <result property="gjzcNum"    column="gjzc_num"    />
+        <result property="studentNum"    column="student_num"    />
+        <result property="zsqkId"    column="zsqk_id"    />
+        <result property="zsjhNum"    column="zsjh_num"    />
+        <result property="sjlqNum"    column="sjlq_num"    />
+        <result property="fbqk"    column="fbqk"    />
+        <result property="dyzylqNum"    column="dyzylq_num"    />
+        <result property="sjbdNum"    column="sjbd_num"    />
+        <result property="byyjyId"    column="byyjy_id"    />
+        <result property="byl"    column="byl"    />
+        <result property="xwsyl"    column="xwsyl"    />
+        <result property="bysNum"    column="bys_num"    />
+        <result property="ccjyl"    column="ccjyl"    />
+        <result property="gcjyl"    column="gcjyl"    />
+        <result property="byYear"    column="by_year"    />
+    </resultMap>
+
+    <sql id="selectViewGjZyjcVo">
+        SELECT
+            x.xyzy_id AS xyzy_id,
+            x.parent_id AS parent_id,
+            x.ancestors AS ancestors,
+            x.xyzy_daima AS xyzy_daima,
+            x.xyzy_name AS xyzy_name,
+            x.xyzy_short_name AS xyzy_short_name,
+            x.xyzy_zydm AS xyzy_zydm,
+            x.order_num AS order_num,
+            x.xkml AS xkml,
+            x.zylb AS zylb,
+            x.remarks AS remarks,
+            x.zy_creat_year AS zy_creat_year,
+            x.create_by AS create_by,
+            x.create_time AS create_time,
+            x.update_by AS update_by,
+            x.update_time AS update_time,
+            zr.zrjsyxs_id AS zrjsyxs_id,
+            zr.teacher_num AS teacher_num,
+            zr.gjzc_num AS gjzc_num,
+            zr.student_num AS student_num,
+            zs.zsqk_id AS zsqk_id,
+            zs.zsjh_num AS zsjh_num,
+            zs.sjlq_num AS sjlq_num,
+            zs.fbqk AS fbqk,
+            zs.dyzylq_num AS dyzylq_num,
+            zs.sjbd_num AS sjbd_num,
+            b.byyjy_id AS byyjy_id,
+            b.byl AS byl,
+            b.xwsyl AS xwsyl,
+            b.bys_num AS bys_num,
+            b.ccjyl AS ccjyl,
+            b.gcjyl AS gcjyl,
+            b.by_year AS by_year
+            from c_gj_xyzy x
+		    left join c_gj_zrjsyxs zr on x.xyzy_id = zr.xyzy_id
+		    left join c_gj_zsqk zs on x.xyzy_id = zs.xyzy_id
+		    left join c_gj_byyjy b on x.xyzy_id = b.xyzy_id
+    </sql>
+
+    <select id="selectViewGjZyjcList" parameterType="ViewGjZyjc" resultMap="ViewGjZyjcResult">
+        <include refid="selectViewGjZyjcVo"/>
+        <where>  
+            <if test="xyzyDaima != null  and xyzyDaima != ''"> and xyzy_daima = #{xyzyDaima}</if>
+            <if test="xyzyName != null  and xyzyName != ''"> and xyzy_name like concat('%', #{xyzyName}, '%')</if>
+            <if test="xyzyZydm != null  and xyzyZydm != ''"> and xyzy_zydm = #{xyzyZydm}</if>
+            <if test="xkml != null  and xkml != ''"> and xkml = #{xkml}</if>
+            <if test="zylb != null  and zylb != ''"> and zylb = #{zylb}</if>
+            <if test="remarks != null  and remarks != ''"> and remarks = #{remarks}</if>
+            <if test="zyCreatYear != null  and zyCreatYear != ''"> and zy_creat_year = #{zyCreatYear}</if>
+            <if test="byYear != null  and byYear != ''"> and by_year = #{byYear}</if>
+        </where>
+    </select>
+    
+    <select id="selectViewGjZyjcByXyzyId" parameterType="Long" resultMap="ViewGjZyjcResult">
+        <include refid="selectViewGjZyjcVo"/>
+        where xyzy_id = #{xyzyId}
+    </select>
+        
+    <insert id="insertViewGjZyjc" parameterType="ViewGjZyjc">
+        insert into c_gj_xyzy
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="parentId != null">parent_id,</if>
+            <if test="ancestors != null">ancestors,</if>
+            <if test="xyzyDaima != null">xyzy_daima,</if>
+            <if test="xyzyName != null">xyzy_name,</if>
+            <if test="xyzyShortName != null">xyzy_short_name,</if>
+            <if test="xyzyZydm != null">xyzy_zydm,</if>
+            <if test="orderNum != null">order_num,</if>
+            <if test="xkml != null">xkml,</if>
+            <if test="zylb != null">zylb,</if>
+            <if test="remarks != null">remarks,</if>
+            <if test="zyCreatYear != null">zy_creat_year,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="parentId != null">#{parentId},</if>
+            <if test="ancestors != null">#{ancestors},</if>
+            <if test="xyzyDaima != null">#{xyzyDaima},</if>
+            <if test="xyzyName != null">#{xyzyName},</if>
+            <if test="xyzyShortName != null">#{xyzyShortName},</if>
+            <if test="xyzyZydm != null">#{xyzyZydm},</if>
+            <if test="orderNum != null">#{orderNum},</if>
+            <if test="xkml != null">#{xkml},</if>
+            <if test="zylb != null">#{zylb},</if>
+            <if test="remarks != null">#{remarks},</if>
+            <if test="zyCreatYear != null">#{zyCreatYear},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+        </trim>
+
+
+        insert into c_gj_zrjsyxs
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="xyzyId != null">xyzy_id,</if>
+            <if test="teacherNum != null">teacher_num,</if>
+            <if test="gjzcNum != null">gjzc_num,</if>
+            <if test="studentNum != null">student_num,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="xyzyId != null">#{xyzyId},</if>
+            <if test="teacherNum != null">#{teacherNum},</if>
+            <if test="gjzcNum != null">#{gjzcNum},</if>
+            <if test="studentNum != null">#{studentNum},</if>
+        </trim>
+
+        insert into c_gj_zsqk
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="xyzyId != null">xyzy_id,</if>
+            <if test="zsjhNum != null">zsjh_num,</if>
+            <if test="sjlqNum != null">sjlq_num,</if>
+            <if test="fbqk != null">fbqk,</if>
+            <if test="dyzylqNum != null">dyzylq_num,</if>
+            <if test="sjbdNum != null">sjbd_num,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="xyzyId != null">#{xyzyId},</if>
+            <if test="zsjhNum != null">#{zsjhNum},</if>
+            <if test="sjlqNum != null">#{sjlqNum},</if>
+            <if test="fbqk != null">#{fbqk},</if>
+            <if test="dyzylqNum != null">#{dyzylqNum},</if>
+            <if test="sjbdNum != null">#{sjbdNum},</if>
+        </trim>
+
+        insert into c_gj_byyjy,
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="xyzyId != null">xyzy_id,</if>
+            <if test="byl != null">byl,</if>
+            <if test="xwsyl != null">xwsyl,</if>
+            <if test="bysNum != null">bys_num,</if>
+            <if test="ccjyl != null">ccjyl,</if>
+            <if test="gcjyl != null">gcjyl,</if>
+            <if test="byYear != null">by_year,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="xyzyId != null">#{xyzyId},</if>
+            <if test="byl != null">#{byl},</if>
+            <if test="xwsyl != null">#{xwsyl},</if>
+            <if test="bysNum != null">#{bysNum},</if>
+            <if test="ccjyl != null">#{ccjyl},</if>
+            <if test="gcjyl != null">#{gcjyl},</if>
+            <if test="byYear != null">#{byYear},</if>
+        </trim>
+    </insert>
+
+    <update id="updateViewGjZyjc" parameterType="ViewGjZyjc">
+        update view_gj_zyjc
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="parentId != null">parent_id = #{parentId},</if>
+            <if test="ancestors != null">ancestors = #{ancestors},</if>
+            <if test="xyzyDaima != null">xyzy_daima = #{xyzyDaima},</if>
+            <if test="xyzyName != null">xyzy_name = #{xyzyName},</if>
+            <if test="xyzyShortName != null">xyzy_short_name = #{xyzyShortName},</if>
+            <if test="xyzyZydm != null">xyzy_zydm = #{xyzyZydm},</if>
+            <if test="orderNum != null">order_num = #{orderNum},</if>
+            <if test="xkml != null">xkml = #{xkml},</if>
+            <if test="zylb != null">zylb = #{zylb},</if>
+            <if test="remarks != null">remarks = #{remarks},</if>
+            <if test="zyCreatYear != null">zy_creat_year = #{zyCreatYear},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="zrjsyxsId != null">zrjsyxs_id = #{zrjsyxsId},</if>
+            <if test="teacherNum != null">teacher_num = #{teacherNum},</if>
+            <if test="gjzcNum != null">gjzc_num = #{gjzcNum},</if>
+            <if test="studentNum != null">student_num = #{studentNum},</if>
+            <if test="zsqkId != null">zsqk_id = #{zsqkId},</if>
+            <if test="zsjhNum != null">zsjh_num = #{zsjhNum},</if>
+            <if test="sjlqNum != null">sjlq_num = #{sjlqNum},</if>
+            <if test="fbqk != null">fbqk = #{fbqk},</if>
+            <if test="dyzylqNum != null">dyzylq_num = #{dyzylqNum},</if>
+            <if test="sjbdNum != null">sjbd_num = #{sjbdNum},</if>
+            <if test="byyjyId != null">byyjy_id = #{byyjyId},</if>
+            <if test="byl != null">byl = #{byl},</if>
+            <if test="xwsyl != null">xwsyl = #{xwsyl},</if>
+            <if test="bysNum != null">bys_num = #{bysNum},</if>
+            <if test="ccjyl != null">ccjyl = #{ccjyl},</if>
+            <if test="gcjyl != null">gcjyl = #{gcjyl},</if>
+            <if test="byYear != null">by_year = #{byYear},</if>
+        </trim>
+        where xyzy_id = #{xyzyId}
+    </update>
+
+    <delete id="deleteViewGjZyjcByXyzyId" parameterType="Long">
+        delete from view_gj_zyjc where xyzy_id = #{xyzyId}
+    </delete>
+
+    <delete id="deleteViewGjZyjcByXyzyIds" parameterType="String">
+        delete from view_gj_zyjc where xyzy_id in 
+        <foreach item="xyzyId" collection="array" open="(" separator="," close=")">
+            #{xyzyId}
+        </foreach>
+    </delete>
+</mapper>

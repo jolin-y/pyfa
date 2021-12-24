@@ -11,7 +11,7 @@ import com.ruoyi.common.core.text.Convert;
 import com.ruoyi.common.exception.UtilException;
 import com.ruoyi.common.utils.DictUtils;
 import com.ruoyi.common.utils.StringUtils;
-import com.ruoyi.drdc.domain.CGjXyzy;
+import com.ruoyi.common.core.domain.entity.CGjXyzy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

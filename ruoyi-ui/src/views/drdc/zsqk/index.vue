@@ -10,51 +10,51 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="招生计划数" prop="zsjhNum">
-        <el-input
-          v-model="queryParams.zsjhNum"
-          placeholder="请输入招生计划数"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="实际录取数" prop="sjlqNum">
-        <el-input
-          v-model="queryParams.sjlqNum"
-          placeholder="请输入实际录取数"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="分班情况" prop="fbqk">
-        <el-input
-          v-model="queryParams.fbqk"
-          placeholder="请输入分班情况"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="第一志愿录取数" prop="dyzylqNum">
-        <el-input
-          v-model="queryParams.dyzylqNum"
-          placeholder="请输入第一志愿录取数"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="实际报到数" prop="sjbdNum">
-        <el-input
-          v-model="queryParams.sjbdNum"
-          placeholder="请输入实际报到数"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
+<!--      <el-form-item label="招生计划数" prop="zsjhNum">-->
+<!--        <el-input-->
+<!--          v-model="queryParams.zsjhNum"-->
+<!--          placeholder="请输入招生计划数"-->
+<!--          clearable-->
+<!--          size="small"-->
+<!--          @keyup.enter.native="handleQuery"-->
+<!--        />-->
+<!--      </el-form-item>-->
+<!--      <el-form-item label="实际录取数" prop="sjlqNum">-->
+<!--        <el-input-->
+<!--          v-model="queryParams.sjlqNum"-->
+<!--          placeholder="请输入实际录取数"-->
+<!--          clearable-->
+<!--          size="small"-->
+<!--          @keyup.enter.native="handleQuery"-->
+<!--        />-->
+<!--      </el-form-item>-->
+<!--      <el-form-item label="分班情况" prop="fbqk">-->
+<!--        <el-input-->
+<!--          v-model="queryParams.fbqk"-->
+<!--          placeholder="请输入分班情况"-->
+<!--          clearable-->
+<!--          size="small"-->
+<!--          @keyup.enter.native="handleQuery"-->
+<!--        />-->
+<!--      </el-form-item>-->
+<!--      <el-form-item label="第一志愿录取数" prop="dyzylqNum">-->
+<!--        <el-input-->
+<!--          v-model="queryParams.dyzylqNum"-->
+<!--          placeholder="请输入第一志愿录取数"-->
+<!--          clearable-->
+<!--          size="small"-->
+<!--          @keyup.enter.native="handleQuery"-->
+<!--        />-->
+<!--      </el-form-item>-->
+<!--      <el-form-item label="实际报到数" prop="sjbdNum">-->
+<!--        <el-input-->
+<!--          v-model="queryParams.sjbdNum"-->
+<!--          placeholder="请输入实际报到数"-->
+<!--          clearable-->
+<!--          size="small"-->
+<!--          @keyup.enter.native="handleQuery"-->
+<!--        />-->
+<!--      </el-form-item>-->
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
@@ -110,7 +110,7 @@
 
     <el-table v-loading="loading" :data="zsqkList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="招生情况id" align="center" prop="zsqkId" />
+<!--      <el-table-column label="招生情况id" align="center" prop="zsqkId" />-->
       <el-table-column label="学院专业id" align="center" prop="xyzyId" />
       <el-table-column label="招生计划数" align="center" prop="zsjhNum" />
       <el-table-column label="实际录取数" align="center" prop="sjlqNum" />
@@ -136,7 +136,7 @@
         </template>
       </el-table-column>
     </el-table>
-    
+
     <pagination
       v-show="total>0"
       :total="total"

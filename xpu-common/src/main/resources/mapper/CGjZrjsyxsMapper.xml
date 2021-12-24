@@ -14,14 +14,23 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="createTime"    column="create_time"    />
         <result property="updateBy"    column="update_by"    />
         <result property="updateTime"    column="update_time"    />
+        <association property="xyzy"    column="xyzy_id" javaType="CGjXyzy" resultMap="CGjXyzyResult" />
+    </resultMap>
+
+    <resultMap type="CGjXyzy" id="CGjXyzyResult">
+        <result property="xyzyId"    column="xyzy_id"    />
+        <result property="xyzyName"    column="xyzy_name"    />
     </resultMap>
 
     <sql id="selectCGjZrjsyxsVo">
         select zrjsyxs_id, xyzy_id, teacher_num, gjzc_num, student_num, create_by, create_time, update_by, update_time from c_gj_zrjsyxs
     </sql>
 
+
+    <!--        <include refid="selectCGjZrjsyxsVo"/>-->
     <select id="selectCGjZrjsyxsList" parameterType="CGjZrjsyxs" resultMap="CGjZrjsyxsResult">
-        <include refid="selectCGjZrjsyxsVo"/>
+        select zr.zrjsyxs_id, zr.xyzy_id, zr.teacher_num, zr.gjzc_num, zr.student_num, zr.create_by, zr.create_time, zr.update_by, zr.update_time, xyzy.xyzy_name from c_gj_zrjsyxs zr
+        left join c_gj_xyzy xyzy on zr.xyzy_id = xyzy.xyzy_id
         <where>  
             <if test="xyzyId != null "> and xyzy_id = #{xyzyId}</if>
             <if test="teacherNum != null "> and teacher_num = #{teacherNum}</if>

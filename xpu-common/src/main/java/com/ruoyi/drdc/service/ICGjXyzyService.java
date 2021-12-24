@@ -1,6 +1,7 @@
 package com.ruoyi.drdc.service;
 
-import com.ruoyi.drdc.domain.CGjXyzy;
+import com.ruoyi.common.core.domain.TreeSelect;
+import com.ruoyi.common.core.domain.entity.CGjXyzy;
 
 import java.util.List;
 
@@ -73,4 +74,23 @@ public interface ICGjXyzyService
 
 
 //    public List<CGjXyzy> getChildList(List<CGjXyzy> list, CGjXyzy t);
+
+
+
+
+    /**
+     * 构建前端所需要树结构
+     *
+     * @param depts 部门列表
+     * @return 树结构列表
+     */
+    public List<CGjXyzy> buildXyzyTree(List<CGjXyzy> cGjXyzys);
+
+    /**
+     * 构建前端所需要下拉树结构
+     *
+     * @param cGjXyzys 部门列表
+     * @return 下拉树结构列表
+     */
+    public List<TreeSelect> buildXyzyTreeSelect(List<CGjXyzy> cGjXyzys);
 }

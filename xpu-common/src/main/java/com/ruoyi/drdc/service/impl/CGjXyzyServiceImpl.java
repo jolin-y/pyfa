@@ -1,14 +1,18 @@
 package com.ruoyi.drdc.service.impl;
 
+import com.ruoyi.common.core.domain.TreeSelect;
 import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.common.utils.StringUtils;
-import com.ruoyi.drdc.domain.CGjXyzy;
+import com.ruoyi.common.core.domain.entity.CGjXyzy;
 import com.ruoyi.drdc.mapper.CGjXyzyMapper;
 import com.ruoyi.drdc.service.ICGjXyzyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 学院专业Service业务层处理
@@ -152,46 +156,97 @@ public class CGjXyzyServiceImpl implements ICGjXyzyService
 
 
 
-//    /**
-//     * 递归列表
-//     */
-//    public void recursionFn(List<CGjXyzy> list, CGjXyzy t)
-//    {
-//        // 得到子节点列表
-//        List<CGjXyzy> childList = getChildList(list, t);
-//        t.setChildren(childList);
-//        for (CGjXyzy tChild : childList)
-//        {
-//            if (hasChild(list, tChild))
-//            {
-//                recursionFn(list, tChild);
-//            }
-//        }
-//    }
-//
-//    /**
-//     * 得到子节点列表
-//     */
-//    public List<CGjXyzy> getChildList(List<CGjXyzy> list, CGjXyzy t)
-//    {
-//        List<CGjXyzy> tlist = new ArrayList<CGjXyzy>();
-//        Iterator<CGjXyzy> it = list.iterator();
-//        while (it.hasNext())
-//        {
-//            CGjXyzy n = (CGjXyzy) it.next();
-//            if (StringUtils.isNotNull(n.getParentId()) && n.getParentId().longValue() == t.getXyzyId().longValue())
-//            {
-//                tlist.add(n);
-//            }
-//        }
-//        return tlist;
-//    }
-//
-//    /**
-//     * 判断是否有子节点
-//     */
-//    private boolean hasChild(List<CGjXyzy> list, CGjXyzy t)
-//    {
-//        return getChildList(list, t).size() > 0 ? true : false;
-//    }
+    /**
+     * 递归列表
+     */
+    public void recursionFn(List<CGjXyzy> list, CGjXyzy t)
+    {
+        // 得到子节点列表
+        List<CGjXyzy> childList = getChildList(list, t);
+        t.setChildren(childList);
+        for (CGjXyzy tChild : childList)
+        {
+            if (hasChild(list, tChild))
+            {
+                recursionFn(list, tChild);
+            }
+        }
+    }
+
+
+
+
+
+    /**
+     * 得到子节点列表
+     */
+    public List<CGjXyzy> getChildList(List<CGjXyzy> list, CGjXyzy t)
+    {
+        List<CGjXyzy> tlist = new ArrayList<CGjXyzy>();
+        Iterator<CGjXyzy> it = list.iterator();
+        while (it.hasNext())
+        {
+            CGjXyzy n = (CGjXyzy) it.next();
+            if (StringUtils.isNotNull(n.getParentId()) && n.getParentId().longValue() == t.getXyzyId().longValue())
+            {
+                tlist.add(n);
+            }
+        }
+        return tlist;
+    }
+
+    /**
+     * 判断是否有子节点
+     */
+    private boolean hasChild(List<CGjXyzy> list, CGjXyzy t)
+    {
+        return getChildList(list, t).size() > 0 ? true : false;
+    }
+
+
+    /**
+     * 构建前端所需要树结构
+     *
+     * @param cGjXyzys 部门列表
+     * @return 树结构列表
+     */
+    @Override
+    public List<CGjXyzy> buildXyzyTree(List<CGjXyzy> cGjXyzys)
+    {
+        List<CGjXyzy> returnList = new ArrayList<CGjXyzy>();
+        List<Long> tempList = new ArrayList<Long>();
+        for (CGjXyzy xyzy : cGjXyzys)
+        {
+            tempList.add(xyzy.getXyzyId());
+        }
+        for (Iterator<CGjXyzy> iterator = cGjXyzys.iterator(); iterator.hasNext();)
+        {
+            CGjXyzy xyzy = (CGjXyzy) iterator.next();
+            // 如果是顶级节点, 遍历该父节点的所有子节点
+            if (!tempList.contains(xyzy.getParentId()))
+            {
+                recursionFn(cGjXyzys, xyzy);
+                returnList.add(xyzy);
+            }
+        }
+        if (returnList.isEmpty())
+        {
+            returnList = cGjXyzys;
+        }
+        return returnList;
+    }
+
+
+    /**
+     * 构建前端所需要下拉树结构
+     *
+     * @param cGjXyzys 部门列表
+     * @return 下拉树结构列表
+     */
+    @Override
+    public List<TreeSelect> buildXyzyTreeSelect(List<CGjXyzy> cGjXyzys)
+    {
+        List<CGjXyzy> xyzyTrees = buildXyzyTree(cGjXyzys);
+        return xyzyTrees.stream().map(TreeSelect::new).collect(Collectors.toList());
+    }
 }

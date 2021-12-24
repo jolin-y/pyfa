@@ -60,3 +60,13 @@ export function exportXyzyWord(query) {
     params: query
   })
 }
+
+
+
+// 查询部门下拉树结构
+export function xyzyTreeselect() {
+  return request({
+    url: '/drdc/xyzy/treeselect',
+    method: 'get'
+  })
+}

@@ -1,12 +1,13 @@
 package com.ruoyi.drdc.service.impl;
 
-import java.util.List;
 import com.ruoyi.common.utils.DateUtils;
+import com.ruoyi.drdc.domain.CGjByyjy;
+import com.ruoyi.drdc.mapper.CGjByyjyMapper;
+import com.ruoyi.drdc.service.ICGjByyjyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.ruoyi.drdc.mapper.CGjByyjyMapper;
-import com.ruoyi.drdc.domain.CGjByyjy;
-import com.ruoyi.drdc.service.ICGjByyjyService;
+
+import java.util.List;
 
 /**
  * 高教-毕业与就业Service业务层处理
@@ -19,6 +20,7 @@ public class CGjByyjyServiceImpl implements ICGjByyjyService
 {
     @Autowired
     private CGjByyjyMapper cGjByyjyMapper;
+
 
     /**
      * 查询高教-毕业与就业

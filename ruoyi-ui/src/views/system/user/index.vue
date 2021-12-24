@@ -472,6 +472,7 @@ export default {
     this.getConfigKey("sys.user.initPassword").then(response => {
       this.initPassword = response.msg;
     });
+
   },
   methods: {
     /** 查询用户列表 */
@@ -481,8 +482,11 @@ export default {
           this.userList = response.rows;
           this.total = response.total;
           this.loading = false;
+
+          // console.log(this.userList)
         }
       );
+
     },
     /** 查询部门下拉树结构 */
     getTreeselect() {

@@ -10,51 +10,51 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="毕业率" prop="byl">
-        <el-input
-          v-model="queryParams.byl"
-          placeholder="请输入毕业率"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="学位授予率" prop="xwsyl">
-        <el-input
-          v-model="queryParams.xwsyl"
-          placeholder="请输入学位授予率"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="毕业生数" prop="bysNum">
-        <el-input
-          v-model="queryParams.bysNum"
-          placeholder="请输入毕业生数"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="初次就业率" prop="ccjyl">
-        <el-input
-          v-model="queryParams.ccjyl"
-          placeholder="请输入初次就业率"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="过程就业率" prop="gcjyl">
-        <el-input
-          v-model="queryParams.gcjyl"
-          placeholder="请输入过程就业率"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
+<!--      <el-form-item label="毕业率" prop="byl">-->
+<!--        <el-input-->
+<!--          v-model="queryParams.byl"-->
+<!--          placeholder="请输入毕业率"-->
+<!--          clearable-->
+<!--          size="small"-->
+<!--          @keyup.enter.native="handleQuery"-->
+<!--        />-->
+<!--      </el-form-item>-->
+<!--      <el-form-item label="学位授予率" prop="xwsyl">-->
+<!--        <el-input-->
+<!--          v-model="queryParams.xwsyl"-->
+<!--          placeholder="请输入学位授予率"-->
+<!--          clearable-->
+<!--          size="small"-->
+<!--          @keyup.enter.native="handleQuery"-->
+<!--        />-->
+<!--      </el-form-item>-->
+<!--      <el-form-item label="毕业生数" prop="bysNum">-->
+<!--        <el-input-->
+<!--          v-model="queryParams.bysNum"-->
+<!--          placeholder="请输入毕业生数"-->
+<!--          clearable-->
+<!--          size="small"-->
+<!--          @keyup.enter.native="handleQuery"-->
+<!--        />-->
+<!--      </el-form-item>-->
+<!--      <el-form-item label="初次就业率" prop="ccjyl">-->
+<!--        <el-input-->
+<!--          v-model="queryParams.ccjyl"-->
+<!--          placeholder="请输入初次就业率"-->
+<!--          clearable-->
+<!--          size="small"-->
+<!--          @keyup.enter.native="handleQuery"-->
+<!--        />-->
+<!--      </el-form-item>-->
+<!--      <el-form-item label="过程就业率" prop="gcjyl">-->
+<!--        <el-input-->
+<!--          v-model="queryParams.gcjyl"-->
+<!--          placeholder="请输入过程就业率"-->
+<!--          clearable-->
+<!--          size="small"-->
+<!--          @keyup.enter.native="handleQuery"-->
+<!--        />-->
+<!--      </el-form-item>-->
       <el-form-item label="毕业年份(届)" prop="byYear">
         <el-input
           v-model="queryParams.byYear"
@@ -119,7 +119,7 @@
 
     <el-table v-loading="loading" :data="byyjyList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="毕业与就业id" align="center" prop="byyjyId" />
+<!--      <el-table-column label="毕业与就业id" align="center" prop="byyjyId" />-->
       <el-table-column label="学院专业id" align="center" prop="xyzyId" />
       <el-table-column label="毕业率" align="center" prop="byl" />
       <el-table-column label="学位授予率" align="center" prop="xwsyl" />
@@ -146,7 +146,7 @@
         </template>
       </el-table-column>
     </el-table>
-    
+
     <pagination
       v-show="total>0"
       :total="total"

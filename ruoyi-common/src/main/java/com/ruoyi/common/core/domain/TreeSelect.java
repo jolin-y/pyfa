@@ -2,13 +2,15 @@ package com.ruoyi.common.core.domain;
 
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.ruoyi.common.core.domain.entity.CGjXyzy;
 import com.ruoyi.common.core.domain.entity.SysDept;
 import com.ruoyi.common.core.domain.entity.SysMenu;
-//import com.ruoyi.pyfa.domain.CPyByyq;
 
 import java.io.Serializable;
 import java.util.List;
 import java.util.stream.Collectors;
+
+//import com.ruoyi.pyfa.domain.CPyByyq;
 
 //import com.ruoyi.pyfa.domain.CPyByyq;
 /**
@@ -40,6 +42,13 @@ public class TreeSelect implements Serializable
         this.id = dept.getDeptId();
         this.label = dept.getDeptName();
         this.children = dept.getChildren().stream().map(TreeSelect::new).collect(Collectors.toList());
+    }
+
+    public TreeSelect(CGjXyzy xyzy)
+    {
+        this.id = xyzy.getXyzyId();
+        this.label = xyzy.getXyzyName();
+        this.children = xyzy.getChildren().stream().map(TreeSelect::new).collect(Collectors.toList());
     }
 
 //    public TreeSelect(CPyByyq byyq)

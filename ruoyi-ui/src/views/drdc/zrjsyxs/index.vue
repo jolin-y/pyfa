@@ -1,47 +1,81 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="学院专业id" prop="xyzyId">
-        <el-input
-          v-model="queryParams.xyzyId"
-          placeholder="请输入学院专业id"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="教师数量" prop="teacherNum">
-        <el-input
-          v-model="queryParams.teacherNum"
-          placeholder="请输入教师数量"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="高级职称数量" prop="gjzcNum">
-        <el-input
-          v-model="queryParams.gjzcNum"
-          placeholder="请输入高级职称数量"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="学生数量" prop="studentNum">
-        <el-input
-          v-model="queryParams.studentNum"
-          placeholder="请输入学生数量"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
-        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
-      </el-form-item>
-    </el-form>
+    <el-row :gutter="20">
+      <!--专业数据-->
+      <el-col :span="4" :xs="24">
+        <div class="head-container">
+          <el-input
+            v-model="xyzyName"
+            placeholder="请输入专业名称"
+            clearable
+            size="small"
+            prefix-icon="el-icon-search"
+            style="margin-bottom: 20px"
+          />
+        </div>
+        <div class="head-container">
+          <el-tree
+            :data="xyzyOptions"
+            :props="defaultProps"
+            :expand-on-click-node="false"
+            :filter-node-method="filterNode"
+            ref="tree"
+            default-expand-all
+            @node-click="handleNodeClick"
+          />
+        </div>
+      </el-col>
+
+      <!--专任教师数据-->
+      <el-col :span="20" :xs="24">
+
+
+
+
+
+<!--    <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="68px">-->
+<!--      <el-form-item label="学院专业id" prop="xyzyId">-->
+<!--        <el-input-->
+<!--          v-model="queryParams.xyzyId"-->
+<!--          placeholder="请输入学院专业id"-->
+<!--          clearable-->
+<!--          size="small"-->
+<!--          @keyup.enter.native="handleQuery"-->
+<!--        />-->
+<!--      </el-form-item>-->
+
+<!--      <el-form-item label="教师数量" prop="teacherNum">-->
+<!--        <el-input-->
+<!--          v-model="queryParams.teacherNum"-->
+<!--          placeholder="请输入教师数量"-->
+<!--          clearable-->
+<!--          size="small"-->
+<!--          @keyup.enter.native="handleQuery"-->
+<!--        />-->
+<!--      </el-form-item>-->
+<!--      <el-form-item label="高级职称数量" prop="gjzcNum">-->
+<!--        <el-input-->
+<!--          v-model="queryParams.gjzcNum"-->
+<!--          placeholder="请输入高级职称数量"-->
+<!--          clearable-->
+<!--          size="small"-->
+<!--          @keyup.enter.native="handleQuery"-->
+<!--        />-->
+<!--      </el-form-item>-->
+<!--      <el-form-item label="学生数量" prop="studentNum">-->
+<!--        <el-input-->
+<!--          v-model="queryParams.studentNum"-->
+<!--          placeholder="请输入学生数量"-->
+<!--          clearable-->
+<!--          size="small"-->
+<!--          @keyup.enter.native="handleQuery"-->
+<!--        />-->
+<!--      </el-form-item>-->
+<!--      <el-form-item>-->
+<!--        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>-->
+<!--        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>-->
+<!--      </el-form-item>-->
+<!--    </el-form>-->
 
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
@@ -92,8 +126,11 @@
 
     <el-table v-loading="loading" :data="zrjsyxsList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="专任教师与学生id" align="center" prop="zrjsyxsId" />
-      <el-table-column label="学院专业id" align="center" prop="xyzyId" />
+<!--      <el-table-column label="专任教师与学生id" align="center" prop="zrjsyxsId" />-->
+<!--      <el-table-column label="学院专业id" align="center" prop="xyzyId" />-->
+
+      <el-table-column label="学院专业名称" align="center" prop="xyzy.xyzyName"/>
+
       <el-table-column label="教师数量" align="center" prop="teacherNum" />
       <el-table-column label="高级职称数量" align="center" prop="gjzcNum" />
       <el-table-column label="学生数量" align="center" prop="studentNum" />
@@ -116,7 +153,10 @@
         </template>
       </el-table-column>
     </el-table>
-    
+
+      </el-col>
+    </el-row>
+
     <pagination
       v-show="total>0"
       :total="total"
@@ -128,9 +168,15 @@
     <!-- 添加或修改高教-专任教师与学生对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="学院专业id" prop="xyzyId">
-          <el-input v-model="form.xyzyId" placeholder="请输入学院专业id" />
+<!--        <el-form-item label="学院专业id" prop="xyzyId">-->
+<!--          <el-input v-model="form.xyzyId" placeholder="请输入学院专业id" />-->
+<!--        </el-form-item>-->
+
+        <el-form-item label="归属专业" prop="deptId">
+          <treeselect v-model="form.xyzyId" :options="xyzyOptions" :show-count="true" placeholder="请选择归属专业" />
         </el-form-item>
+
+
         <el-form-item label="教师数量" prop="teacherNum">
           <el-input v-model="form.teacherNum" placeholder="请输入教师数量" />
         </el-form-item>
@@ -146,14 +192,20 @@
         <el-button @click="cancel">取 消</el-button>
       </div>
     </el-dialog>
+
   </div>
 </template>
 
 <script>
 import { listZrjsyxs, getZrjsyxs, delZrjsyxs, addZrjsyxs, updateZrjsyxs, exportZrjsyxs } from "@/api/drdc/zrjsyxs";
 
+import { xyzyTreeselect } from "@/api/drdc/xyzy";
+import Treeselect from "@riophae/vue-treeselect";
+import "@riophae/vue-treeselect/dist/vue-treeselect.css";
+
 export default {
   name: "Zrjsyxs",
+  components: { Treeselect },
   data() {
     return {
       // 遮罩层
@@ -176,6 +228,12 @@ export default {
       title: "",
       // 是否显示弹出层
       open: false,
+
+      // 学院专业树选项
+      xyzyOptions: [],
+      // 学院专业名称
+      xyzyName: undefined,
+
       // 查询参数
       queryParams: {
         pageNum: 1,
@@ -187,13 +245,26 @@ export default {
       },
       // 表单参数
       form: {},
+      defaultProps: {
+        children: "children",
+        label: "label"
+      },
       // 表单校验
       rules: {
       }
     };
   },
+
+  watch: {
+    // 根据名称筛选部门树
+    xyzyName(val) {
+      this.$refs.tree.filter(val);
+    }
+  },
+
   created() {
     this.getList();
+    this.getTreeselect();
   },
   methods: {
     /** 查询高教-专任教师与学生列表 */
@@ -203,6 +274,7 @@ export default {
         this.zrjsyxsList = response.rows;
         this.total = response.total;
         this.loading = false;
+        // console.log(this.zrjsyxsList)
       });
     },
     // 取消按钮
@@ -244,12 +316,14 @@ export default {
     /** 新增按钮操作 */
     handleAdd() {
       this.reset();
+      this.getTreeselect();
       this.open = true;
       this.title = "添加高教-专任教师与学生";
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
       this.reset();
+      this.getTreeselect();
       const zrjsyxsId = row.zrjsyxsId || this.ids
       getZrjsyxs(zrjsyxsId).then(response => {
         this.form = response.data;
@@ -297,7 +371,27 @@ export default {
         this.$download.name(response.msg);
         this.exportLoading = false;
       }).catch(() => {});
-    }
+    },
+
+
+    /** 查询部门下拉树结构 */
+    getTreeselect() {
+      xyzyTreeselect().then(response => {
+        this.xyzyOptions = response.data;
+      });
+    },
+
+    // 筛选节点
+    filterNode(value, data) {
+      if (!value) return true;
+      return data.label.indexOf(value) !== -1;
+    },
+    // 节点单击事件
+    handleNodeClick(data) {
+      this.queryParams.xyzyId = data.id;
+      this.getList();
+    },
+
   }
 };
 </script>

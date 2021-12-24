@@ -85,9 +85,9 @@
           />
         </el-select>
       </el-form-item>
-<!--      <el-form-item label="年份" prop="year">-->
+<!--      <el-form-item label="年份" prop="zyCreatYear">-->
 <!--        <el-input-->
-<!--          v-model="queryParams.year"-->
+<!--          v-model="queryParams.zyCreatYear"-->
 <!--          placeholder="请输入年份"-->
 <!--          clearable-->
 <!--          size="small"-->
@@ -163,10 +163,10 @@
           <dict-tag :options="dict.type.c_gj_remark" :value="scope.row.remarks"/>
         </template>
       </el-table-column>
-<!--      <el-table-column label="年份" align="center" prop="year" />-->
+      <el-table-column label="专业创建年份" align="center" prop="zyCreatYear" />
 
 <!--      <el-table-column label="显示顺序" align="center" prop="orderNum" />-->
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+      <el-table-column label="操作" align="center" class-name="small-padding fixed-width" width="150px">
         <template slot-scope="scope">
           <el-button
             size="mini"
@@ -268,9 +268,9 @@
 <!--          </el-checkbox-group>-->
 <!--        </el-form-item>-->
 
-<!--        <el-form-item label="年份" prop="year" v-if="form.parentId === 0">-->
-<!--          <el-input v-model="form.year" placeholder="请输入年份" />-->
-<!--        </el-form-item>-->
+        <el-form-item label="专业创建年份" prop="zyCreatYear" v-if="form.parentId === 0">
+          <el-input v-model="form.zyCreatYear" placeholder="请输入专业创建年份" />
+        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm">确 定</el-button>
@@ -322,7 +322,7 @@ export default {
         xkml: null,
         zylb: null,
         remarks: null,
-        // year: null,
+        // zyCreatYear: null,
       },
       // 表单参数
       form: {},
@@ -382,7 +382,7 @@ export default {
         xkml: null,
         zylb: null,
         remarks: null,
-        year: null,
+        zyCreatYear: null,
         createBy: null,
         createTime: null,
         updateBy: null,

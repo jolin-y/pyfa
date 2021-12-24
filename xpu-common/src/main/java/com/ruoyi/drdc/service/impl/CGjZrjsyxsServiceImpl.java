@@ -41,6 +41,7 @@ public class CGjZrjsyxsServiceImpl implements ICGjZrjsyxsService
      * @return 高教-专任教师与学生
      */
     @Override
+//    @DataScope(xyzyAlias = "xyzy", zrjsyxsAlias = "zr")
     public List<CGjZrjsyxs> selectCGjZrjsyxsList(CGjZrjsyxs cGjZrjsyxs)
     {
         return cGjZrjsyxsMapper.selectCGjZrjsyxsList(cGjZrjsyxs);

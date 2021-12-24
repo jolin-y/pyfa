@@ -6,7 +6,7 @@ import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.drdc.common.WordUtil;
-import com.ruoyi.drdc.domain.CGjXyzy;
+import com.ruoyi.common.core.domain.entity.CGjXyzy;
 import com.ruoyi.drdc.service.ICGjXyzyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -110,5 +110,17 @@ public class CGjXyzyController extends BaseController
         return util.exportWord(list,"高教_学院专业统计word");
 //        return util.exportWord(listByXyzyDaima,"高教_学院专业统计word");
 
+    }
+
+
+
+    /**
+     * 获取部门下拉树列表
+     */
+    @GetMapping("/treeselect")
+    public AjaxResult xyzyTreeselect(CGjXyzy cGjXyzy)
+    {
+        List<CGjXyzy> cGjXyzys = cGjXyzyService.selectCGjXyzyList(cGjXyzy);
+        return AjaxResult.success(cGjXyzyService.buildXyzyTreeSelect(cGjXyzys));
     }
 }

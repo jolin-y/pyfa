@@ -41,6 +41,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="remarks != null  and remarks != ''"> and remarks = #{remarks}</if>
             <if test="zyCreatYear != null  and zyCreatYear != ''"> and zy_creat_year = #{zyCreatYear}</if>
         </where>
+        order by parent_id, order_num
     </select>
     
     <select id="selectCGjXyzyByXyzyId" parameterType="Long" resultMap="CGjXyzyResult">
