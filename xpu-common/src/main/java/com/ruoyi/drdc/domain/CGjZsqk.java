@@ -1,9 +1,9 @@
 package com.ruoyi.drdc.domain;
 
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.core.domain.BaseEntity;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
  * 高教-招生情况对象 c_gj_zsqk
@@ -41,6 +41,9 @@ public class CGjZsqk extends BaseEntity
     /** 实际报到数 */
     @Excel(name = "实际报到数")
     private Long sjbdNum;
+
+    /** 专业设置对象 */
+    private CGjZysz zysz;
 
     public void setZsqkId(Long zsqkId) 
     {
@@ -106,6 +109,16 @@ public class CGjZsqk extends BaseEntity
         return sjbdNum;
     }
 
+    public CGjZysz getZysz()
+    {
+        return zysz;
+    }
+
+    public void setZysz(CGjZysz zysz)
+    {
+        this.zysz = zysz;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
@@ -120,6 +133,7 @@ public class CGjZsqk extends BaseEntity
             .append("createTime", getCreateTime())
             .append("updateBy", getUpdateBy())
             .append("updateTime", getUpdateTime())
+            .append("zysz", getZysz())
             .toString();
     }
 }

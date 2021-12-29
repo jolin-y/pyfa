@@ -1,15 +1,27 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="学院专业id" prop="xyzyId">
-        <el-input
-          v-model="queryParams.xyzyId"
-          placeholder="请输入学院专业id"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-        />
+<!--      <el-form-item label="学院专业id" prop="xyzyId">-->
+<!--        <el-input-->
+<!--          v-model="queryParams.xyzyId"-->
+<!--          placeholder="请输入学院专业id"-->
+<!--          clearable-->
+<!--          size="small"-->
+<!--          @keyup.enter.native="handleQuery"-->
+<!--        />-->
+<!--      </el-form-item>-->
+      <el-form-item label="专业" prop="xyzyId">
+        <el-select v-model="queryParams.xyzyId" placeholder="请选择专业" filterable clearable size="small">
+          <el-option
+            v-for="item in zyszOptions"
+            :key="item.zyId"
+            :label="item.zyName"
+            :value="item.zyId"
+          ></el-option>
+        </el-select>
       </el-form-item>
+
+
 <!--      <el-form-item label="招生计划数" prop="zsjhNum">-->
 <!--        <el-input-->
 <!--          v-model="queryParams.zsjhNum"-->
@@ -111,7 +123,8 @@
     <el-table v-loading="loading" :data="zsqkList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
 <!--      <el-table-column label="招生情况id" align="center" prop="zsqkId" />-->
-      <el-table-column label="学院专业id" align="center" prop="xyzyId" />
+<!--      <el-table-column label="学院专业id" align="center" prop="xyzyId" />-->
+      <el-table-column label="专业名称" align="center" prop="zysz.zyName"/>
       <el-table-column label="招生计划数" align="center" prop="zsjhNum" />
       <el-table-column label="实际录取数" align="center" prop="sjlqNum" />
       <el-table-column label="分班情况" align="center" prop="fbqk" />
@@ -148,9 +161,38 @@
     <!-- 添加或修改高教-招生情况对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="学院专业id" prop="xyzyId">
-          <el-input v-model="form.xyzyId" placeholder="请输入学院专业id" />
+<!--        <el-form-item label="学院专业id" prop="xyzyId">-->
+<!--          <el-input v-model="form.xyzyId" placeholder="请输入学院专业id" />-->
+<!--        </el-form-item>-->
+
+<!--        <el-form-item label="专业" prop="zyName">-->
+<!--          <el-input v-model="form.zyName" placeholder="请输入专业" />-->
+<!--        </el-form-item>-->
+
+
+<!--        多选-->
+<!--        <el-form-item label="专业">-->
+<!--          <el-select v-model="form.zyszIds" multiple placeholder="请选择专业">-->
+<!--            <el-option-->
+<!--              v-for="item in zyszOptions"-->
+<!--              :key="item.zyId"-->
+<!--              :label="item.zyName"-->
+<!--              :value="item.zyId"-->
+<!--            ></el-option>-->
+<!--          </el-select>-->
+<!--        </el-form-item>-->
+
+        <el-form-item label="专业">
+          <el-select v-model="form.xyzyId" placeholder="请选择专业" filterable clearable>
+            <el-option
+              v-for="item in zyszOptions"
+              :key="item.zyId"
+              :label="item.zyName"
+              :value="item.zyId"
+            ></el-option>
+          </el-select>
         </el-form-item>
+
         <el-form-item label="招生计划数" prop="zsjhNum">
           <el-input v-model="form.zsjhNum" placeholder="请输入招生计划数" />
         </el-form-item>
@@ -202,6 +244,10 @@ export default {
       title: "",
       // 是否显示弹出层
       open: false,
+      // 专业名称
+      zyName: undefined,
+      // 专业选项
+      zyszOptions:[],
       // 查询参数
       queryParams: {
         pageNum: 1,
@@ -222,6 +268,7 @@ export default {
   },
   created() {
     this.getList();
+    this.getZyszOptions();
   },
   methods: {
     /** 查询高教-招生情况列表 */
@@ -251,7 +298,8 @@ export default {
         createBy: null,
         createTime: null,
         updateBy: null,
-        updateTime: null
+        updateTime: null,
+        // zyszIds: [],
       };
       this.resetForm("form");
     },
@@ -274,8 +322,15 @@ export default {
     /** 新增按钮操作 */
     handleAdd() {
       this.reset();
-      this.open = true;
-      this.title = "添加高教-招生情况";
+
+      getZsqk().then(response => {
+        this.zyszOptions = response.zyszs;
+
+        this.open = true;
+        this.title = "添加招生情况";
+      });
+      // this.open = true;
+      // this.title = "添加高教-招生情况";
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
@@ -283,8 +338,12 @@ export default {
       const zsqkId = row.zsqkId || this.ids
       getZsqk(zsqkId).then(response => {
         this.form = response.data;
+
+        this.zyszOptions = response.zyszs;
+        // this.form.zyszIds = response.zyszIds;
+
         this.open = true;
-        this.title = "修改高教-招生情况";
+        this.title = "修改招生情况";
       });
     },
     /** 提交按钮 */
@@ -327,7 +386,15 @@ export default {
         this.$download.name(response.msg);
         this.exportLoading = false;
       }).catch(() => {});
-    }
+    },
+
+    /** 查询专业选项 zyszOptions*/
+    getZyszOptions() {
+      this.reset();
+      getZsqk().then(response => {
+        this.zyszOptions = response.zyszs;
+      });
+    },
   }
 };
 </script>

@@ -587,7 +587,7 @@ export default {
       const userId = row.userId || this.ids;
       getUser(userId).then(response => {
         this.form = response.data;
-        console.log(response.data);
+        // console.log(response.data);
 
         this.postOptions = response.posts;
         this.roleOptions = response.roles;

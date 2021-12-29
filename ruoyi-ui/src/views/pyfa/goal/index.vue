@@ -451,7 +451,7 @@ export default {
       // console.log(goalId)
 
       getGoal(goalId).then(response => {
-        console.log(response.data)
+        // console.log(response.data)
 
         this.form = response.data;
         this.open = true;

@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.drdc.mapper.CGjZyszMapper">
+    
+    <resultMap type="CGjZysz" id="CGjZyszResult">
+        <result property="zyId"    column="zy_id"    />
+        <result property="deptId"    column="dept_id"    />
+        <result property="zyName"    column="zy_name"    />
+        <result property="xyzyZydm"    column="xyzy_zydm"    />
+        <result property="zyCreatYear"    column="zy_creat_year"    />
+        <result property="xkml"    column="xkml"    />
+        <result property="zylb"    column="zylb"    />
+        <result property="remarks"    column="remarks"    />
+        <result property="orderNum"    column="order_num"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <association property="dept"    column="dept_id" javaType="SysDept" resultMap="deptResult" />
+    </resultMap>
+
+    <resultMap id="deptResult" type="SysDept">
+        <id     property="deptId"   column="dept_id"     />
+        <result property="parentId" column="parent_id"   />
+        <result property="deptName" column="dept_name"   />
+        <result property="orderNum" column="order_num"   />
+        <result property="leader"   column="leader"      />
+        <result property="status"   column="dept_status" />
+    </resultMap>
+
+    <sql id="selectCGjZyszVo">
+        select zy_id, dept_id, zy_name, xyzy_zydm, zy_creat_year, xkml, zylb, remarks, order_num, create_by, create_time, update_by, update_time from c_gj_zysz
+    </sql>
+
+    <select id="selectCGjZyszList" parameterType="CGjZysz" resultMap="CGjZyszResult">
+        select zy_id, zysz.dept_id, zy_name, xyzy_zydm, zy_creat_year, xkml, zylb, remarks, zysz.order_num, zysz.create_by, zysz.create_time, zysz.update_by, zysz.update_time, d.dept_name from c_gj_zysz zysz
+        left join sys_dept d on zysz.dept_id = d.dept_id
+        <where>
+            <if test="zyName != null  and zyName != ''"> and zy_name like concat('%', #{zyName}, '%')</if>
+            <if test="xyzyZydm != null  and xyzyZydm != ''"> and xyzy_zydm = #{xyzyZydm}</if>
+            <if test="zyCreatYear != null  and zyCreatYear != ''"> and zy_creat_year = #{zyCreatYear}</if>
+            <if test="xkml != null  and xkml != ''"> and xkml = #{xkml}</if>
+            <if test="zylb != null  and zylb != ''"> and zylb = #{zylb}</if>
+            <if test="remarks != null  and remarks != ''"> and remarks = #{remarks}</if>
+            <if test="deptId != null and deptId != 0">
+                AND (zysz.dept_id = #{deptId} OR zysz.dept_id IN ( SELECT t.dept_id FROM sys_dept t WHERE find_in_set(#{deptId}, ancestors) ))
+            </if>
+        </where>
+    </select>
+    
+    <select id="selectCGjZyszByZyId" parameterType="Long" resultMap="CGjZyszResult">
+        <include refid="selectCGjZyszVo"/>
+        where zy_id = #{zyId}
+    </select>
+    
+
+    <select id="selectCGjZyszAll" resultMap="CGjZyszResult">
+        <include refid="selectCGjZyszVo"/>
+    </select>
+
+    <select id="selectCGjZyszListByZsqkId" parameterType="Long" resultType="Integer">
+		select zysz.zy_id
+        from c_gj_zysz zysz
+	        left join c_gj_zsqk zsqk on zsqk.xyzy_id = zysz.zy_id
+	    where zsqk.zsqk_id = #{zsqkId}
+	</select>
+        
+    <insert id="insertCGjZysz" parameterType="CGjZysz" useGeneratedKeys="true" keyProperty="zyId">
+        insert into c_gj_zysz
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="deptId != null">dept_id,</if>
+            <if test="zyName != null">zy_name,</if>
+            <if test="xyzyZydm != null">xyzy_zydm,</if>
+            <if test="zyCreatYear != null">zy_creat_year,</if>
+            <if test="xkml != null">xkml,</if>
+            <if test="zylb != null">zylb,</if>
+            <if test="remarks != null">remarks,</if>
+            <if test="orderNum != null">order_num,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="deptId != null">#{deptId},</if>
+            <if test="zyName != null">#{zyName},</if>
+            <if test="xyzyZydm != null">#{xyzyZydm},</if>
+            <if test="zyCreatYear != null">#{zyCreatYear},</if>
+            <if test="xkml != null">#{xkml},</if>
+            <if test="zylb != null">#{zylb},</if>
+            <if test="remarks != null">#{remarks},</if>
+            <if test="orderNum != null">#{orderNum},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateCGjZysz" parameterType="CGjZysz">
+        update c_gj_zysz
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="deptId != null">dept_id = #{deptId},</if>
+            <if test="zyName != null">zy_name = #{zyName},</if>
+            <if test="xyzyZydm != null">xyzy_zydm = #{xyzyZydm},</if>
+            <if test="zyCreatYear != null">zy_creat_year = #{zyCreatYear},</if>
+            <if test="xkml != null">xkml = #{xkml},</if>
+            <if test="zylb != null">zylb = #{zylb},</if>
+            <if test="remarks != null">remarks = #{remarks},</if>
+            <if test="orderNum != null">order_num = #{orderNum},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where zy_id = #{zyId}
+    </update>
+
+    <delete id="deleteCGjZyszByZyId" parameterType="Long">
+        delete from c_gj_zysz where zy_id = #{zyId}
+    </delete>
+
+    <delete id="deleteCGjZyszByZyIds" parameterType="String">
+        delete from c_gj_zysz where zy_id in 
+        <foreach item="zyId" collection="array" open="(" separator="," close=")">
+            #{zyId}
+        </foreach>
+    </delete>
+</mapper>

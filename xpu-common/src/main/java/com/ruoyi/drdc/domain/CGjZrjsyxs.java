@@ -89,7 +89,7 @@ public class CGjZrjsyxs extends BaseEntity
         return xyzy;
     }
 
-    public void setDept(CGjXyzy xyzy)
+    public void setXyzy(CGjXyzy xyzy)
     {
         this.xyzy = xyzy;
     }

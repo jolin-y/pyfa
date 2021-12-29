@@ -33,6 +33,14 @@ export function treeselect() {
   })
 }
 
+// 查询部门下拉树结构
+export function treeselect2layer() {
+  return request({
+    url: '/system/dept/treeselect2layer',
+    method: 'get'
+  })
+}
+
 // 根据角色ID查询部门树结构
 export function roleDeptTreeselect(roleId) {
   return request({

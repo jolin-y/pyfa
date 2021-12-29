@@ -16,14 +16,22 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="createTime"    column="create_time"    />
         <result property="updateBy"    column="update_by"    />
         <result property="updateTime"    column="update_time"    />
+        <association property="zysz"    column="zy_id" javaType="CGjZysz" resultMap="CGjZyszResult" />
+    </resultMap>
+
+    <resultMap type="CGjZysz" id="CGjZyszResult">
+        <result property="zyId"    column="zy_id"    />
+        <result property="zyName"    column="zy_name"    />
     </resultMap>
 
     <sql id="selectCGjZsqkVo">
         select zsqk_id, xyzy_id, zsjh_num, sjlq_num, fbqk, dyzylq_num, sjbd_num, create_by, create_time, update_by, update_time from c_gj_zsqk
     </sql>
 
+<!--    <include refid="selectCGjZsqkVo"/>-->
     <select id="selectCGjZsqkList" parameterType="CGjZsqk" resultMap="CGjZsqkResult">
-        <include refid="selectCGjZsqkVo"/>
+        select zs.zsqk_id, zs.xyzy_id, zs.zsjh_num, zs.sjlq_num, zs.fbqk, zs.dyzylq_num, zs.sjbd_num, zs.create_by, zs.create_time, zs.update_by, zs.update_time, zysz.zy_name from c_gj_zsqk zs
+        left join c_gj_zysz zysz on zs.xyzy_id = zysz.zy_id
         <where>  
             <if test="xyzyId != null "> and xyzy_id = #{xyzyId}</if>
             <if test="zsjhNum != null "> and zsjh_num = #{zsjhNum}</if>

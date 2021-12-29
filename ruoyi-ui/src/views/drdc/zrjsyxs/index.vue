@@ -274,6 +274,7 @@ export default {
         this.zrjsyxsList = response.rows;
         this.total = response.total;
         this.loading = false;
+
         // console.log(this.zrjsyxsList)
       });
     },

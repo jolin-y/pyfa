@@ -1,4 +1,5 @@
 import request from '@/utils/request'
+import {praseStrEmpty} from "@/utils/ruoyi";
 
 // 查询高教-招生情况列表
 export function listZsqk(query) {
@@ -12,7 +13,8 @@ export function listZsqk(query) {
 // 查询高教-招生情况详细
 export function getZsqk(zsqkId) {
   return request({
-    url: '/drdc/zsqk/' + zsqkId,
+    // url: '/drdc/zsqk/' + zsqkId,
+    url: '/drdc/zsqk/' + praseStrEmpty(zsqkId),
     method: 'get'
   })
 }

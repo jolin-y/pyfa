@@ -291,7 +291,7 @@ export default {
     handleUpdate(row) {
       this.reset();
       getDept(row.deptId).then(response => {
-        console.log(response.data)
+        // console.log(response.data)
         this.form = response.data;
         this.open = true;
         this.title = "修改部门";
