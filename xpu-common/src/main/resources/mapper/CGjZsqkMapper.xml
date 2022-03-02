@@ -17,11 +17,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="updateBy"    column="update_by"    />
         <result property="updateTime"    column="update_time"    />
         <association property="zysz"    column="zy_id" javaType="CGjZysz" resultMap="CGjZyszResult" />
+        <association property="dept"    column="dept_id" javaType="SysDept" resultMap="SysDeptResult" />
+<!--        <association property="deptId"    column="dept_id" javaType="Long"/>-->
     </resultMap>
 
     <resultMap type="CGjZysz" id="CGjZyszResult">
         <result property="zyId"    column="zy_id"    />
         <result property="zyName"    column="zy_name"    />
+    </resultMap>
+
+    <resultMap type="SysDept" id="SysDeptResult">
+        <result     property="deptId"     column="dept_id"     />
+        <result property="deptName"   column="dept_name"   />
     </resultMap>
 
     <sql id="selectCGjZsqkVo">
@@ -30,8 +37,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 <!--    <include refid="selectCGjZsqkVo"/>-->
     <select id="selectCGjZsqkList" parameterType="CGjZsqk" resultMap="CGjZsqkResult">
-        select zs.zsqk_id, zs.xyzy_id, zs.zsjh_num, zs.sjlq_num, zs.fbqk, zs.dyzylq_num, zs.sjbd_num, zs.create_by, zs.create_time, zs.update_by, zs.update_time, zysz.zy_name from c_gj_zsqk zs
+        select zs.zsqk_id, zs.xyzy_id, zs.zsjh_num, zs.sjlq_num, zs.fbqk, zs.dyzylq_num, zs.sjbd_num, zs.create_by, zs.create_time, zs.update_by, zs.update_time, zysz.zy_name, dept.dept_id from c_gj_zsqk zs
         left join c_gj_zysz zysz on zs.xyzy_id = zysz.zy_id
+        LEFT JOIN sys_dept dept ON zysz.dept_id = dept.dept_id
         <where>  
             <if test="xyzyId != null "> and xyzy_id = #{xyzyId}</if>
             <if test="zsjhNum != null "> and zsjh_num = #{zsjhNum}</if>
@@ -39,12 +47,22 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="fbqk != null "> and fbqk = #{fbqk}</if>
             <if test="dyzylqNum != null "> and dyzylq_num = #{dyzylqNum}</if>
             <if test="sjbdNum != null "> and sjbd_num = #{sjbdNum}</if>
+            <if test="dept != null ">
+                <if test="dept.deptId != null ">dept.dept_id = #{dept.deptId}</if>
+            </if>
         </where>
     </select>
-    
+<!--    <if test="zysz.deptId != null "> and zysz.dept_id = #{zysz.deptId}</if>-->
+<!--    <if test="deptId != null "> and dept.dept_id = #{deptId}</if>-->
+
+
+
+<!--    <include refid="selectCGjZsqkVo"/>-->
     <select id="selectCGjZsqkByZsqkId" parameterType="Long" resultMap="CGjZsqkResult">
-        <include refid="selectCGjZsqkVo"/>
-        where zsqk_id = #{zsqkId}
+        select zs.zsqk_id, zs.xyzy_id, zs.zsjh_num, zs.sjlq_num, zs.fbqk, zs.dyzylq_num, zs.sjbd_num, zs.create_by, zs.create_time, zs.update_by, zs.update_time,dept.dept_id from c_gj_zsqk zs
+        left join c_gj_zysz zysz on zs.xyzy_id = zysz.zy_id
+        LEFT JOIN sys_dept dept ON zysz.dept_id = dept.dept_id
+        where zs.zsqk_id = #{zsqkId}
     </select>
         
     <insert id="insertCGjZsqk" parameterType="CGjZsqk" useGeneratedKeys="true" keyProperty="zsqkId">

@@ -7,17 +7,17 @@ import com.ruoyi.drdc.domain.ViewGjZyjc;
  * 专业监测Mapper接口
  * 
  * @author ruoyi
- * @date 2021-12-23
+ * @date 2022-01-04
  */
 public interface ViewGjZyjcMapper 
 {
     /**
      * 查询专业监测
      * 
-     * @param xyzyId 专业监测主键
+     * @param zyId 专业监测主键
      * @return 专业监测
      */
-    public ViewGjZyjc selectViewGjZyjcByXyzyId(Long xyzyId);
+    public ViewGjZyjc selectViewGjZyjcByZyId(Long zyId);
 
     /**
      * 查询专业监测列表
@@ -46,16 +46,16 @@ public interface ViewGjZyjcMapper
     /**
      * 删除专业监测
      * 
-     * @param xyzyId 专业监测主键
+     * @param zyId 专业监测主键
      * @return 结果
      */
-    public int deleteViewGjZyjcByXyzyId(Long xyzyId);
+    public int deleteViewGjZyjcByZyId(Long zyId);
 
     /**
      * 批量删除专业监测
      * 
-     * @param xyzyIds 需要删除的数据主键集合
+     * @param zyIds 需要删除的数据主键集合
      * @return 结果
      */
-    public int deleteViewGjZyjcByXyzyIds(Long[] xyzyIds);
+    public int deleteViewGjZyjcByZyIds(Long[] zyIds);
 }

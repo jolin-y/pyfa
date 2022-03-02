@@ -72,6 +72,7 @@
         <dependency>
             <groupId>com.ruoyi</groupId>
             <artifactId>xpu-common</artifactId>
+<!--            <artifactId>xpu-gaojiao</artifactId>-->
             <version>3.7.0</version>
         </dependency>
 

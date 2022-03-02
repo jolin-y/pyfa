@@ -2,6 +2,7 @@ package com.ruoyi.drdc.domain;
 
 import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.core.domain.BaseEntity;
+import com.ruoyi.common.core.domain.entity.SysDept;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
@@ -44,6 +45,9 @@ public class CGjZsqk extends BaseEntity
 
     /** 专业设置对象 */
     private CGjZysz zysz;
+
+//    private Long deptId;
+    private SysDept dept;
 
     public void setZsqkId(Long zsqkId) 
     {
@@ -119,6 +123,26 @@ public class CGjZsqk extends BaseEntity
         this.zysz = zysz;
     }
 
+//    public Long getDeptId()
+//    {
+//        return deptId;
+//    }
+//
+//    public void setDeptId(Long deptId)
+//    {
+//        this.deptId = deptId;
+//    }
+
+    public SysDept getDept()
+    {
+        return dept;
+    }
+
+    public void setDept(SysDept dept)
+    {
+        this.dept = dept;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
@@ -134,6 +158,8 @@ public class CGjZsqk extends BaseEntity
             .append("updateBy", getUpdateBy())
             .append("updateTime", getUpdateTime())
             .append("zysz", getZysz())
+            .append("dept", getDept())
+//            .append("deptId", getDeptId())
             .toString();
     }
 }

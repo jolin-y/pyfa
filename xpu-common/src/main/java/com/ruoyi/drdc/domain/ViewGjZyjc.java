@@ -1,48 +1,56 @@
 package com.ruoyi.drdc.domain;
 
+import com.ruoyi.common.annotation.Excel;
+import com.ruoyi.common.annotation.Word;
+import com.ruoyi.common.core.domain.BaseEntity;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import com.ruoyi.common.annotation.Excel;
-import com.ruoyi.common.core.domain.TreeEntity;
 
 /**
  * 专业监测对象 view_gj_zyjc
  * 
  * @author ruoyi
- * @date 2021-12-23
+ * @date 2022-01-04
  */
-public class ViewGjZyjc extends TreeEntity
+public class ViewGjZyjc extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
 
-    /** 学院专业id(序号) */
-    private Long xyzyId;
+    /** 专业id(序号) */
+    private Long zyId;
 
-    /** 学院代码 */
-    @Excel(name = "学院代码")
-    private String xyzyDaima;
+    /** 部门id */
+    private Long deptId;
 
-    /** 学院专业名称 */
-    @Excel(name = "学院专业名称")
-    private String xyzyName;
+    /** 专业名称 */
+    @Word
+    @Excel(name = "专业名称")
+    private String zyName;
 
-    /** 学院简称 */
-    @Excel(name = "学院简称")
-    private String xyzyShortName;
+    /** 部门名称 */
+    @Word
+    @Excel(name = "部门名称")
+    private String deptName;
 
     /** 专业代码 */
     @Excel(name = "专业代码")
     private String xyzyZydm;
 
+    /** 显示顺序 */
+    private Integer orderNum;
+
     /** 学科门类 */
+    @Word(dictType = "c_gj_xkml")
     @Excel(name = "学科门类")
     private String xkml;
 
     /** 专业类别 */
+    @Word(dictType = "c_gj_zylb")
     @Excel(name = "专业类别")
     private String zylb;
 
     /** 备注信息 */
+    @Word(dictType = "c_gj_remark")
     @Excel(name = "备注信息")
     private String remarks;
 
@@ -66,7 +74,6 @@ public class ViewGjZyjc extends TreeEntity
     private Long studentNum;
 
     /** 招生情况id */
-    @Excel(name = "招生情况id")
     private Long zsqkId;
 
     /** 招生计划数 */
@@ -116,41 +123,41 @@ public class ViewGjZyjc extends TreeEntity
     @Excel(name = "毕业年份(届)")
     private String byYear;
 
-    public void setXyzyId(Long xyzyId) 
+    public void setZyId(Long zyId) 
     {
-        this.xyzyId = xyzyId;
+        this.zyId = zyId;
     }
 
-    public Long getXyzyId() 
+    public Long getZyId() 
     {
-        return xyzyId;
+        return zyId;
     }
-    public void setXyzyDaima(String xyzyDaima) 
+    public void setDeptId(Long deptId) 
     {
-        this.xyzyDaima = xyzyDaima;
-    }
-
-    public String getXyzyDaima() 
-    {
-        return xyzyDaima;
-    }
-    public void setXyzyName(String xyzyName) 
-    {
-        this.xyzyName = xyzyName;
+        this.deptId = deptId;
     }
 
-    public String getXyzyName() 
+    public Long getDeptId() 
     {
-        return xyzyName;
+        return deptId;
     }
-    public void setXyzyShortName(String xyzyShortName) 
+    public void setZyName(String zyName) 
     {
-        this.xyzyShortName = xyzyShortName;
+        this.zyName = zyName;
     }
 
-    public String getXyzyShortName() 
+    public String getZyName() 
     {
-        return xyzyShortName;
+        return zyName;
+    }
+    public void setDeptName(String deptName) 
+    {
+        this.deptName = deptName;
+    }
+
+    public String getDeptName() 
+    {
+        return deptName;
     }
     public void setXyzyZydm(String xyzyZydm) 
     {
@@ -160,6 +167,15 @@ public class ViewGjZyjc extends TreeEntity
     public String getXyzyZydm() 
     {
         return xyzyZydm;
+    }
+    public void setOrderNum(Integer orderNum) 
+    {
+        this.orderNum = orderNum;
+    }
+
+    public Integer getOrderNum() 
+    {
+        return orderNum;
     }
     public void setXkml(String xkml) 
     {
@@ -354,12 +370,10 @@ public class ViewGjZyjc extends TreeEntity
     @Override
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
-            .append("xyzyId", getXyzyId())
-            .append("parentId", getParentId())
-            .append("ancestors", getAncestors())
-            .append("xyzyDaima", getXyzyDaima())
-            .append("xyzyName", getXyzyName())
-            .append("xyzyShortName", getXyzyShortName())
+            .append("zyId", getZyId())
+            .append("deptId", getDeptId())
+            .append("zyName", getZyName())
+            .append("deptName", getDeptName())
             .append("xyzyZydm", getXyzyZydm())
             .append("orderNum", getOrderNum())
             .append("xkml", getXkml())

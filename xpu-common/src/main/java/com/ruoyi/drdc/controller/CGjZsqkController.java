@@ -8,6 +8,7 @@ import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.drdc.domain.CGjZsqk;
+import com.ruoyi.drdc.domain.CGjZysz;
 import com.ruoyi.drdc.service.ICGjZsqkService;
 import com.ruoyi.drdc.service.ICGjZyszService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * 高教-招生情况Controller
@@ -67,13 +70,20 @@ public class CGjZsqkController extends BaseController
     public AjaxResult getInfo(@PathVariable(value = "zsqkId", required = false) Long zsqkId)
     {
 //        return AjaxResult.success(cGjZsqkService.selectCGjZsqkByZsqkId(zsqkId));
-
         AjaxResult ajax = AjaxResult.success();
-        ajax.put("zyszs", cGjZyszService.selectCGjZyszAll());
+
+//        ajax.put("zyszs", cGjZyszService.selectCGjZyszAll());
+        List<CGjZysz> zyszList = cGjZyszService.selectCGjZyszAll();
+        Map<Long, List<CGjZysz>> zyDeptMap = zyszList.stream().collect(
+                Collectors.groupingBy(
+                        zysz -> zysz.getDeptId()
+                ));
+        ajax.put("zyDeptMap", zyDeptMap);
+
         if (StringUtils.isNotNull(zsqkId))
         {
             ajax.put(AjaxResult.DATA_TAG, cGjZsqkService.selectCGjZsqkByZsqkId(zsqkId));
-            ajax.put("zyszIds", cGjZyszService.selectCGjZyszListByZsqkId(zsqkId));
+            ajax.put("zyszIds", cGjZyszService.selectCGjZyszListByZsqkId(zsqkId));  // 没用到
         }
         return ajax;
     }

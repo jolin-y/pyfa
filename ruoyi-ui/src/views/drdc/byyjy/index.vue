@@ -342,7 +342,7 @@ export default {
         this.$download.name(response.msg);
         this.exportLoading = false;
       }).catch(() => {});
-    }
+    },
   }
 };
 </script>

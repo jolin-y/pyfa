@@ -226,9 +226,13 @@
             ></el-option>
           </el-select>
         </el-form-item>
+<!--        <el-form-item label="显示顺序" prop="orderNum">-->
+<!--          <el-input v-model="form.orderNum" placeholder="请输入显示顺序" />-->
+<!--        </el-form-item>-->
         <el-form-item label="显示顺序" prop="orderNum">
-          <el-input v-model="form.orderNum" placeholder="请输入显示顺序" />
+          <el-input-number v-model="form.orderNum" controls-position="right" :min="0" />
         </el-form-item>
+
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm">确 定</el-button>
@@ -355,7 +359,7 @@ export default {
       this.reset();
       this.getTreeselect();
       this.open = true;
-      this.title = "添加专业设置2";
+      this.title = "添加专业设置";
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
@@ -365,7 +369,7 @@ export default {
       getZysz(zyId).then(response => {
         this.form = response.data;
         this.open = true;
-        this.title = "修改专业设置2";
+        this.title = "修改专业设置";
       });
     },
     /** 提交按钮 */
@@ -391,7 +395,7 @@ export default {
     /** 删除按钮操作 */
     handleDelete(row) {
       const zyIds = row.zyId || this.ids;
-      this.$modal.confirm('是否确认删除专业设置2编号为"' + zyIds + '"的数据项？').then(function() {
+      this.$modal.confirm('是否确认删除专业设置编号为"' + zyIds + '"的数据项？').then(function() {
         return delZysz(zyIds);
       }).then(() => {
         this.getList();
@@ -401,7 +405,7 @@ export default {
     /** 导出按钮操作 */
     handleExport() {
       const queryParams = this.queryParams;
-      this.$modal.confirm('是否确认导出所有专业设置2数据项？').then(() => {
+      this.$modal.confirm('是否确认导出所有专业设置数据项？').then(() => {
         this.exportLoading = true;
         return exportZysz(queryParams);
       }).then(response => {

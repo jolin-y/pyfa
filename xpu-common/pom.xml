@@ -10,6 +10,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>xpu-common</artifactId>
+<!--    <artifactId>xpu-gaojiao</artifactId>-->
 
     <dependencies>
         <!-- 核心模块-->

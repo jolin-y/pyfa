@@ -14,10 +14,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 教师信息Controller
@@ -76,21 +73,21 @@ public class CGjTeacherController extends BaseController
     }
 
 
-    /**
-     * list转Map<String,Object>
-     */
-    public static List<Map<String, Object>> toListMap(List<CGjTeacher> userList) {
-        List<Map<String, Object>> result = new ArrayList<>();
-        Map<String, Object> map;
-        for (CGjTeacher user : userList) {
-            map = new HashMap<>();
-            map.put("teacherId", user.getTeacherId());
-            map.put("teacherName", user.getTeacherName());
-            map.put("degree", user.getDegreeId());
-            result.add(map);
-        }
-        return result;
-    }
+//    /**
+//     * list转Map<String,Object>
+//     */
+//    public static List<Map<String, Object>> toListMap(List<CGjTeacher> userList) {
+//        List<Map<String, Object>> result = new ArrayList<>();
+//        Map<String, Object> map;
+//        for (CGjTeacher user : userList) {
+//            map = new HashMap<>();
+//            map.put("teacherId", user.getTeacherId());
+//            map.put("teacherName", user.getTeacherName());
+//            map.put("degree", user.getDegreeId());
+//            result.add(map);
+//        }
+//        return result;
+//    }
 
 
 

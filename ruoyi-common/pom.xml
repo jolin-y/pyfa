@@ -118,12 +118,13 @@
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
         </dependency>
-        <dependency>
-            <groupId>com.ruoyi</groupId>
-            <artifactId>service</artifactId>
-            <version>3.7.0</version>
-            <scope>compile</scope>
-        </dependency>
+
+<!--        <dependency>-->
+<!--            <groupId>com.ruoyi</groupId>-->
+<!--            <artifactId>service</artifactId>-->
+<!--            <version>3.7.0</version>-->
+<!--            <scope>compile</scope>-->
+<!--        </dependency>-->
 
 
         <!--        &lt;!&ndash; 培养方案&ndash;&gt;-->

@@ -1,29 +1,25 @@
 package com.ruoyi.drdc.controller;
 
-import java.util.List;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
+import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.enums.BusinessType;
+import com.ruoyi.common.utils.poi.ExcelUtil;
+import com.ruoyi.drdc.common.WordUtil;
 import com.ruoyi.drdc.domain.ViewGjZyjc;
 import com.ruoyi.drdc.service.IViewGjZyjcService;
-import com.ruoyi.common.utils.poi.ExcelUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * 专业监测Controller
  * 
  * @author ruoyi
- * @date 2021-12-23
+ * @date 2022-01-04
  */
 @RestController
 @RequestMapping("/drdc/zyjc")
@@ -37,10 +33,11 @@ public class ViewGjZyjcController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('drdc:zyjc:list')")
     @GetMapping("/list")
-    public AjaxResult list(ViewGjZyjc viewGjZyjc)
+    public TableDataInfo list(ViewGjZyjc viewGjZyjc)
     {
+        startPage();
         List<ViewGjZyjc> list = viewGjZyjcService.selectViewGjZyjcList(viewGjZyjc);
-        return AjaxResult.success(list);
+        return getDataTable(list);
     }
 
     /**
@@ -60,10 +57,10 @@ public class ViewGjZyjcController extends BaseController
      * 获取专业监测详细信息
      */
     @PreAuthorize("@ss.hasPermi('drdc:zyjc:query')")
-    @GetMapping(value = "/{xyzyId}")
-    public AjaxResult getInfo(@PathVariable("xyzyId") Long xyzyId)
+    @GetMapping(value = "/{zyId}")
+    public AjaxResult getInfo(@PathVariable("zyId") Long zyId)
     {
-        return AjaxResult.success(viewGjZyjcService.selectViewGjZyjcByXyzyId(xyzyId));
+        return AjaxResult.success(viewGjZyjcService.selectViewGjZyjcByZyId(zyId));
     }
 
     /**
@@ -93,9 +90,34 @@ public class ViewGjZyjcController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('drdc:zyjc:remove')")
     @Log(title = "专业监测", businessType = BusinessType.DELETE)
-	@DeleteMapping("/{xyzyIds}")
-    public AjaxResult remove(@PathVariable Long[] xyzyIds)
+	@DeleteMapping("/{zyIds}")
+    public AjaxResult remove(@PathVariable Long[] zyIds)
     {
-        return toAjax(viewGjZyjcService.deleteViewGjZyjcByXyzyIds(xyzyIds));
+        return toAjax(viewGjZyjcService.deleteViewGjZyjcByZyIds(zyIds));
+    }
+
+
+    /**
+     * 导出教师信息列表word
+     */
+    @PreAuthorize("@ss.hasPermi('drdc:zyjc:export')")
+    @Log(title = "专业监测", businessType = BusinessType.EXPORTWORD)
+    @GetMapping("/exportWord")
+    public AjaxResult exportWord(ViewGjZyjc viewGjZyjc)
+    {
+        List<ViewGjZyjc> list = viewGjZyjcService.selectViewGjZyjcList(viewGjZyjc);
+        System.out.println(list);
+        com.ruoyi.drdc.common.WordUtil<ViewGjZyjc> util = new WordUtil<ViewGjZyjc>(ViewGjZyjc.class);
+//        return util.exportExcel(list, "教师信息数据");
+
+//        Map<String, List<ViewGjZyjc>> collect = new HashMap<>();
+//        for (ViewGjZyjc gjZyjc : list) {
+//            collect.computeIfAbsent(String.valueOf(gjZyjc.getDeptId()), k -> new ArrayList<>()).add(gjZyjc);
+//        }
+
+//        return util.exportWord(list,"教师信息统计word");
+//        return util.exportWord6(list,"教师信息统计word");
+        return util.exportWord5(list,"教师信息统计5word");
+
     }
 }

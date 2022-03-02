@@ -10,6 +10,23 @@
 <!--          @keyup.enter.native="handleQuery"-->
 <!--        />-->
 <!--      </el-form-item>-->
+<!--      <el-form-item label="学院" prop="deptId">-->
+<!--        <el-select v-model="queryParams.deptId" placeholder="请选择学院" filterable clearable size="small">-->
+<!--          <el-option-->
+<!--            v-for="item in deptOptions"-->
+<!--            :key="item.xyId"-->
+<!--            :label="item.xyName"-->
+<!--            :value="item.xyId"-->
+<!--          ></el-option>-->
+<!--        </el-select>-->
+<!--      </el-form-item>-->
+
+      <el-form-item label="所属学院" prop="deptId">
+<!--        <treeselect v-model="queryParams.deptId" :options="deptOptions" :show-count="true" placeholder="请选择所属学院" style="width: 205px;line-height: 30px;" @change="changeSelect"/>-->
+        <treeselect v-model="queryParams.deptId" :options="deptOptions" :show-count="true" placeholder="请选择所属学院" style="width: 205px;line-height: 30px;"/>
+      </el-form-item>
+
+
       <el-form-item label="专业" prop="xyzyId">
         <el-select v-model="queryParams.xyzyId" placeholder="请选择专业" filterable clearable size="small">
           <el-option
@@ -182,6 +199,12 @@
 <!--          </el-select>-->
 <!--        </el-form-item>-->
 
+<!--        <el-form-item label="所属学院" prop="dept.deptId">-->
+        <el-form-item label="所属学院" prop="deptId">
+          <!--        <treeselect v-model="queryParams.deptId" :options="deptOptions" :show-count="true" placeholder="请选择所属学院" style="width: 205px;line-height: 30px;" @change="changeSelect"/>-->
+          <treeselect v-model="form.deptId" :options="deptOptions" :show-count="true" placeholder="请选择所属学院" style="width: 205px;line-height: 30px;"/>
+        </el-form-item>
+
         <el-form-item label="专业">
           <el-select v-model="form.xyzyId" placeholder="请选择专业" filterable clearable>
             <el-option
@@ -219,9 +242,13 @@
 
 <script>
 import { listZsqk, getZsqk, delZsqk, addZsqk, updateZsqk, exportZsqk } from "@/api/drdc/zsqk";
+import { treeselect2layer } from "@/api/system/dept";
+import Treeselect from "@riophae/vue-treeselect";
+import "@riophae/vue-treeselect/dist/vue-treeselect.css";
 
 export default {
   name: "Zsqk",
+  components: { Treeselect },
   data() {
     return {
       // 遮罩层
@@ -246,8 +273,12 @@ export default {
       open: false,
       // 专业名称
       zyName: undefined,
+      // 部门与专业关联选项
+      zyDeptMap:{},
       // 专业选项
       zyszOptions:[],
+      // 部门树选项
+      deptOptions: [],
       // 查询参数
       queryParams: {
         pageNum: 1,
@@ -258,6 +289,10 @@ export default {
         fbqk: null,
         dyzylqNum: null,
         sjbdNum: null,
+        // deptId: null,
+        dept: {
+          // deptId: null,
+        },
       },
       // 表单参数
       form: {},
@@ -266,14 +301,33 @@ export default {
       }
     };
   },
+  watch: {
+    //
+    'queryParams.deptId': 'changeSelect',
+    'form.deptId': 'changeSelect'
+  },
   created() {
     this.getList();
     this.getZyszOptions();
+    this.getTreeselect();
   },
   methods: {
     /** 查询高教-招生情况列表 */
     getList() {
       this.loading = true;
+      // console.log(this.queryParams);
+      // console.log(111111111);
+      // console.log(this.queryParams.dept);
+
+      // console.log(this.zyszOptions)
+
+      // if(this.queryParams.deptId != null){
+      //   this.queryParams.dept.deptId = this.queryParams.deptId;
+      //   // this.queryParams.dept
+      // }
+
+
+
       listZsqk(this.queryParams).then(response => {
         this.zsqkList = response.rows;
         this.total = response.total;
@@ -300,6 +354,7 @@ export default {
         updateBy: null,
         updateTime: null,
         // zyszIds: [],
+        zyszOptions: []
       };
       this.resetForm("form");
     },
@@ -324,7 +379,7 @@ export default {
       this.reset();
 
       getZsqk().then(response => {
-        this.zyszOptions = response.zyszs;
+        // this.zyszOptions = response.zyszs;
 
         this.open = true;
         this.title = "添加招生情况";
@@ -338,8 +393,17 @@ export default {
       const zsqkId = row.zsqkId || this.ids
       getZsqk(zsqkId).then(response => {
         this.form = response.data;
+        if(this.form.dept != null){
+          // console.log(this.form.dept);
+          // console.log(this.form.dept.deptId);
+          this.form.deptId = this.form.dept.deptId;
+        }
 
-        this.zyszOptions = response.zyszs;
+        // console.log(response.data);
+        // console.log(this.form);
+
+        // this.zyszOptions = response.zyszs;
+
         // this.form.zyszIds = response.zyszIds;
 
         this.open = true;
@@ -392,9 +456,50 @@ export default {
     getZyszOptions() {
       this.reset();
       getZsqk().then(response => {
-        this.zyszOptions = response.zyszs;
+        // this.zyszOptions = response.zyszs;
+        // console.log(this.zyszOptions)
+
+        this.zyDeptMap = response.zyDeptMap;
+
       });
     },
+
+    /** 查询部门下拉树结构 */
+    getTreeselect() {
+      treeselect2layer().then(response => {
+        this.deptOptions = response.data;
+        // console.log(this.deptOptions)
+      });
+    },
+
+
+    changeSelect() {
+      // 清空专业内容
+      // this.queryParams.xyzyId = ''
+      // this.form.xyzyId = ''
+      this.zyszOptions = [];
+
+      // console.log(this.queryParams.deptId);
+      // console.log(this.deptOptions);
+      // console.log(this.deptOptions[0].children);
+
+      // 遍历部门树选项数组 this.deptOptions[0]  只取第一个学校的学院
+      for (const k in this.deptOptions[0].children) {
+        // console.log(k)
+        // console.log(this.deptOptions[0].children[k])
+        if (this.queryParams.deptId === this.deptOptions[0].children[k].id) {
+          // console.log("匹配到了部门");
+          this.zyszOptions = this.zyDeptMap[this.queryParams.deptId]
+        }
+
+        if (this.form.deptId === this.deptOptions[0].children[k].id) {
+          // console.log("匹配到了部门");
+          this.zyszOptions = this.zyDeptMap[this.form.deptId]
+        }
+
+      }
+    },
+
   }
 };
 </script>

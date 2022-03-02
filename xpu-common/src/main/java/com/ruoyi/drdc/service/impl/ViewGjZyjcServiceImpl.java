@@ -1,18 +1,19 @@
 package com.ruoyi.drdc.service.impl;
 
-import java.util.List;
 import com.ruoyi.common.utils.DateUtils;
+import com.ruoyi.drdc.domain.ViewGjZyjc;
+import com.ruoyi.drdc.mapper.ViewGjZyjcMapper;
+import com.ruoyi.drdc.service.IViewGjZyjcService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.ruoyi.drdc.mapper.ViewGjZyjcMapper;
-import com.ruoyi.drdc.domain.ViewGjZyjc;
-import com.ruoyi.drdc.service.IViewGjZyjcService;
+
+import java.util.List;
 
 /**
  * 专业监测Service业务层处理
  * 
  * @author ruoyi
- * @date 2021-12-23
+ * @date 2022-01-04
  */
 @Service
 public class ViewGjZyjcServiceImpl implements IViewGjZyjcService 
@@ -23,13 +24,13 @@ public class ViewGjZyjcServiceImpl implements IViewGjZyjcService
     /**
      * 查询专业监测
      * 
-     * @param xyzyId 专业监测主键
+     * @param zyId 专业监测主键
      * @return 专业监测
      */
     @Override
-    public ViewGjZyjc selectViewGjZyjcByXyzyId(Long xyzyId)
+    public ViewGjZyjc selectViewGjZyjcByZyId(Long zyId)
     {
-        return viewGjZyjcMapper.selectViewGjZyjcByXyzyId(xyzyId);
+        return viewGjZyjcMapper.selectViewGjZyjcByZyId(zyId);
     }
 
     /**
@@ -73,24 +74,24 @@ public class ViewGjZyjcServiceImpl implements IViewGjZyjcService
     /**
      * 批量删除专业监测
      * 
-     * @param xyzyIds 需要删除的专业监测主键
+     * @param zyIds 需要删除的专业监测主键
      * @return 结果
      */
     @Override
-    public int deleteViewGjZyjcByXyzyIds(Long[] xyzyIds)
+    public int deleteViewGjZyjcByZyIds(Long[] zyIds)
     {
-        return viewGjZyjcMapper.deleteViewGjZyjcByXyzyIds(xyzyIds);
+        return viewGjZyjcMapper.deleteViewGjZyjcByZyIds(zyIds);
     }
 
     /**
      * 删除专业监测信息
      * 
-     * @param xyzyId 专业监测主键
+     * @param zyId 专业监测主键
      * @return 结果
      */
     @Override
-    public int deleteViewGjZyjcByXyzyId(Long xyzyId)
+    public int deleteViewGjZyjcByZyId(Long zyId)
     {
-        return viewGjZyjcMapper.deleteViewGjZyjcByXyzyId(xyzyId);
+        return viewGjZyjcMapper.deleteViewGjZyjcByZyId(zyId);
     }
 }

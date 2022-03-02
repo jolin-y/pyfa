@@ -10,9 +10,9 @@ export function listZyjc(query) {
 }
 
 // 查询专业监测详细
-export function getZyjc(xyzyId) {
+export function getZyjc(zyId) {
   return request({
-    url: '/drdc/zyjc/' + xyzyId,
+    url: '/drdc/zyjc/' + zyId,
     method: 'get'
   })
 }
@@ -36,9 +36,9 @@ export function updateZyjc(data) {
 }
 
 // 删除专业监测
-export function delZyjc(xyzyId) {
+export function delZyjc(zyId) {
   return request({
-    url: '/drdc/zyjc/' + xyzyId,
+    url: '/drdc/zyjc/' + zyId,
     method: 'delete'
   })
 }
@@ -47,6 +47,16 @@ export function delZyjc(xyzyId) {
 export function exportZyjc(query) {
   return request({
     url: '/drdc/zyjc/export',
+    method: 'get',
+    params: query
+  })
+}
+
+
+// 导出专业监测word
+export function exportZyjcInfoWord(query) {
+  return request({
+    url: '/drdc/zyjc/exportWord',
     method: 'get',
     params: query
   })
